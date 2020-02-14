@@ -1,0 +1,20 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="row pt-5">
+    {% for ni in news_portal %}
+        <div class="col-lg-3 col-md-3 col-sm-6 col-12 item-mb text-center">
+            <div class="service-box2 bg-body text-center">
+                {% if ni.newspic %}
+                    <img src="{{ ni.newspic.url }}" height="85" width="140" class='img-fluid profimg' alt="Cannot be found!">
+                {% endif %}
+                <h5 class="title-medium-dark mb-none">
+                    <a href="{% url 'accounts:newsdesc' slug=ni.news_title_slug %}">{{ ni.news_title }}</a>
+                </h5>
+                <p>{{ ni.news_date }}</p>
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+{% endblock %}

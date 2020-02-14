@@ -1,0 +1,777 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+{% load get_by_index %}
+{% load get_by_key %}
+
+  {% block title %}
+      <title>Grocery Merchants</title>
+  {% endblock %}
+
+{% block wallet %}
+
+<div class="pt-2" style="margin:3px 0;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px;">Balance :{% block wallet_cash %}
+    {{wallet.wallet_bal}}
+    {% endblock %}
+  </p>
+  </a>
+  <a class="nav-item nav-link navbar-light"style="color:rgb(255,255,255);font-size:13px;margin:5px 0;line-height:0.5px;" href="{% url 'accounts:history_transac' pk=profile.pk %}">Wallet Transactions</a>
+</div>
+
+
+<a class="nav-item pt-3 nav-link navbar-light" style="color:rgb(255,255,255);" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+<img src="{% static 'wallet-icon.png' %}" height=28 width=24 class="pb-1 d-inline-block alighn-top" />
+</a>
+
+<div class="pt-2" style="margin-top:3px;">
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Cash :{% block cash %}
+    {{wallet.cash_balance}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Savings :{% block savings %}
+    {{wallet.savings}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Loan amt :{% block loan %}
+    {{wallet.loan_amt}} SGD.
+    {% endblock %}
+</p>
+  </a>
+
+
+</div>
+
+<div class="pt-2 pl-2" style="margin-top:3px;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Recycle : {% block recycle %}
+    {{wallet.recycle_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Incentive : {% block incentive %}
+    {{wallet.incentive_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Crowd fund: {% block crowd %}
+    {{wallet.crowd_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+
+</div>
+
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="row col-md-12">
+    <div class="col-md-9">
+        <h4 class="pb-3 pt-3 text-center">Grocery List</h4>
+    </div>
+    <div class="col-md-3">
+        <label for="grand_tot" class="labgrand">Grand Total:</label>
+        <input class="grandtotgroc" id="grandtotprice"  name="grand_tot" id="grand_tot" type="text">
+        <button type="button" name="checkoutbutton" id="checkoutbtn" onclick="checkoutfn('{{ merchant_code.merchant_code }}')" class="btn btn-danger btn-sm checkoutbutt" data-toggle="modal" data-target="#checkoutModal">Checkout</button>
+
+              <div class="modal fade" id="checkoutModal" role="dialog">
+                <div class="modal-dialogs">
+                  <div class="modal-content">
+                    <div class="">
+                      <button type="button" class="close padx" onclick="relofn()" data-dismiss="modal">&times;</button>
+                      <h5 class="text-center pt-3 pb-3" style="border-bottom:2px solid gray">Confirm Buy Grocery Items??</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" id="checkoutForm">
+                            {% csrf_token %}
+                                <div class="">
+                                    <table class="widmax">
+                                        <thead class="text-center">
+                                            <th>S.No</th>
+                                            <th>Name</th>
+                                            <th>Qty</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
+                                        </thead>
+                                    <tbody id="groc_items" class="text-center paragroc">
+
+                                    </tbody>
+
+                                    </table>
+                                    <input type="text"  id="grocqtyhun" name="grocqtyhun">
+                                    <input type="text"  id="grocqtytwohun" name="grocqtytwohun">
+                                    <input type="text"  id="grocqtyfivehun" name="grocqtyfivehun">
+                                    <input type="text"  id="grocqtyonekg" name="grocqtyonekg">
+                                    <input type="text"  id="grocqtyfivekg" name="grocqtyfivekg">
+                                    <input type="text"  id="grocqtytwentyfivekg" name="grocqtytwentyfivekg">
+                                    <input type="text"  id="grocqtyfiftykg" name="grocqtyfiftykg">
+
+                                    <input type="text" value="{{ profile.pk }}" name="profpk1" id="profpk1">
+                                    <input type="text" id="grandtotcheckin" name="grandtotcheckin">
+                                    <input type="text"  id="commodity_descs" name="commodity_descs">
+                                    <input type="text"  id="grocery_descs" name="grocery_descs">
+                                    <input type="text"  id="commodity_codess" name="commodity_codess">
+
+
+                                    <input type="text"  id="hunpricearr" name="hunpricearr">
+                                    <input type="text"  id="twohunpricearr" name="twohunpricearr">
+                                    <input type="text"  id="fivehunpricearr" name="fivehunpricearr">
+                                    <input type="text"  id="onekgpricearr" name="onekgpricearr">
+                                    <input type="text"  id="fivekgpricearr" name="fivekgpricearr">
+                                    <input type="text"  id="twentyfivekgpricearr" name="twentyfivekgpricearr">
+                                    <input type="text"  id="fiftykgpricearr" name="fiftykgpricearr">
+
+
+                                </div>
+                                <div class="text-center">
+                                    <label for="grandtotcheck">Grand Total: </label>
+                                    <input type="text" readonly disabled="disabled" id="grandtotcheck" name="grandtotcheck" value="" class="totpricegroc">
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" name="submit_grocery" class="btn btn-danger btn-sm" id="buygroc">Buy Items</button>
+                                </div>
+                            <div class="pt-3 pb-3 text-center">
+                               <span style="color:#ed2939;font-weight:600;" id="succecont"></span>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+        <br>
+        <label for="grand_qty" class="labgrand">Total Quant:</label>
+            <input class="grandtotgroc" id="grandtotqty"  name="grand_qty" id="grand_qty" type="text">
+    </div>
+</div>
+
+<div class="row">
+<div class="col-lg-12 col-md-12 col-sm-12 col-12 item-mbg item-descg">
+    <div class="service-boxg bg-headg">
+    <div class="row grams-h6">
+        <div class="col-md-2 row">
+            </div>
+
+            <div class="col-md-1  text-center">
+                <h6>100gm</h6>
+            </div>
+            <div class="col-md-1  text-center">
+                <h6>200gm</h6>
+            </div>
+            <div class="col-md-1  text-center">
+                <h6>500gm</h6>
+            </div>
+            <div class="col-md-1  text-center">
+                <h6>1kg</h6>
+            </div>
+            <div class="col-md-1  text-center">
+                <h6>5kg</h6>
+            </div>
+            <div class="col-md-1  text-center">
+                <h6>25kg</h6>
+            </div>
+            <div class="col-md-1  text-center">
+                <h6>50kg</h6>
+            </div>
+            <div class="col-md-1 text-center">
+                <h6>Total Qty</h6>
+            </div>
+            <div class="col-md-1 text-center">
+                <h6>Total Weight</h6>
+            </div>
+            <div class="col-md-1 text-center">
+                <h6>Total Price</h6>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="row">
+{% for item in commodityitems %}
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 item-mbg item-descg">
+                <div class="service-boxg bg-body">
+                <div class="row">
+                    <div class="col-md-2 row">
+                        <div class="col-md-11 row">
+                            <div class="col-md-6">
+                                {% if item.commodity_code.grocery_code.grocery_img %}
+                                  <img src="{{ item.commodity_code.grocery_code.grocery_img.url }}" height="35" width="50" alt="Cannot be found!">
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="itemdescgh">
+                                   <span style="font-size:13px;">
+                                       {{ item.item_desc }}
+                                   </span>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.hundred_price %}
+                                <input  type="text" id="{{ item.commodity_item_code }}_hundred_price" class="inpprice" value="{{ item.hundred_price }}"><span> SGD.</span>
+                            {% else %}
+                                <input value="-"  type="text" id="{{ item.commodity_item_code }}_hundred_price" class="inpprice" >
+                            {% endif %}
+                            {% if item.hundred_price %}
+                                <input type="number" class="groc_qty" min="0" id="hun_qty_{{ item.commodity_item_code }}"  onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty"  value="-" id="hun_qty_{{ item.commodity_item_code }}" >
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.twohundred_price %}
+                                <input type="text" id="{{ item.commodity_item_code }}_twohundred_price" class="inpprice" value="{{ item.twohundred_price }}"><span> SGD.</span>
+                            {% else %}
+                                <input value="-"  type="text" id="{{ item.commodity_item_code }}_twohundred_price" class="inpprice" >
+                            {% endif %}
+                            {% if item.twohundred_price %}
+                                <input type="number" class="groc_qty" min="0" id="twohun_qty_{{ item.commodity_item_code }}"  onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty" readonly id="twohun_qty_{{ item.commodity_item_code }}" disabled="disabled" value="-">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.fivehundred_price %}
+                                <input type="text"  class="inpprice" id="{{ item.commodity_item_code }}_fivehundred_price" value="{{ item.fivehundred_price }}"><span> SGD.</span>
+                            {% else %}
+                                 <input value="-"  type="text" id="{{ item.commodity_item_code }}_fivehundred_price" class="inpprice" >
+                           {% endif %}
+                            {% if item.fivehundred_price %}
+                                <input type="number" class="groc_qty" min="0" id="fivehun_qty_{{ item.commodity_item_code }}" onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty"  value="-" id="fivehun_qty_{{ item.commodity_item_code }}" >
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.onekg_price %}
+                                <input type="text" class="inpprice" id="{{ item.commodity_item_code }}_onekg_price" value="{{ item.onekg_price }}"><span> SGD.</span>
+                            {% else %}
+                                <input value="-"  type="text" id="{{ item.commodity_item_code }}_onekg_price" class="inpprice" >
+                            {% endif %}
+                            {% if item.onekg_price %}
+                                <input type="number" class="groc_qty" min="0" id="onekg_qty_{{ item.commodity_item_code }}" onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.fivekg_price %}
+                                <input type="text" class="inpprice"  id="{{ item.commodity_item_code }}_fivekg_price" value="{{ item.fivekg_price }}"><span> SGD.</span>
+                            {% else %}
+                                <input value="-"  type="text" id="{{ item.commodity_item_code }}_fivekg_price" class="inpprice" >
+                            {% endif %}
+                            {% if item.fivekg_price %}
+                                <input type="number" class="groc_qty" min="0" id="fivekg_qty_{{ item.commodity_item_code }}" onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty" readonly id="fivekg_qty_{{ item.commodity_item_code }}" disabled value="-">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.twentyfivekg_price %}
+                                <input type="text" class="inpprice"  id="{{ item.commodity_item_code }}_twentyfivekg_price" value="{{ item.twentyfivekg_price }}"><span> SGD.</span>
+                            {% else %}
+                                <input value="-"  type="text" id="{{ item.commodity_item_code }}_twentyfivekg_price" class="inpprice" >
+                            {% endif %}
+                            {% if item.twentyfivekg_price %}
+                                <input type="number" class="groc_qty" min="0" id="twentyfivekg_qty_{{ item.commodity_item_code }}"  onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty" id="twentyfivekg_qty_{{ item.commodity_item_code }}" readonly disabled value="-">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-1 itempriqty">
+                            {% if item.fiftykg_price %}
+                                <input type="text" class="inpprice"  id="{{ item.commodity_item_code }}_fiftykg_price" value="{{ item.fiftykg_price }}"><span> SGD.</span>
+                            {% else %}
+                                <input value="-"  type="text" id="{{ item.commodity_item_code }}_fiftykg_price" class="inpprice" >
+                            {% endif %}
+                            {% if item.fiftykg_price %}
+                                <input type="number" class="groc_qty" min="0" id="fiftykg_qty_{{ item.commodity_item_code }}" onclick="groceryfn('{{ item.commodity_item_code }}',id)" onkeyup="groceryfn('{{ item.commodity_item_code }}',id)" placeholder="Qty">
+                            {% else %}
+                                <input type="text" class="groc_qty" disabled id="fiftykg_qty_{{ item.commodity_item_code }}" readonly value="-">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-1 text-center">
+                            <input type="text"  class="totgroc" id="tot_qty_{{ item.commodity_item_code }}">
+                        </div>
+
+                        <div class="col-md-1 text-center">
+                            <input type="text"  class="totgroc" id="tot_weight_{{ item.commodity_item_code }}">
+                        </div>
+
+                        <div class="col-md-1 text-center">
+                            <input type="text"  class="totpricegroc" id="tot_price_{{ item.commodity_item_code }}">
+                        </div>
+
+                </div>
+                </div>
+            </div>
+
+{% endfor %}
+
+</div>
+
+
+<script type="text/javascript">
+  function groceryfn(itemcode,id){
+    itemcodes=itemcode.toString();
+    var tot_qty= document.getElementById('tot_qty_'+itemcodes).value;
+    if (isNaN(tot_qty)){
+        tot_qty= 0;
+    }
+    var hunqty= document.getElementById('hun_qty_'+itemcode).value;
+    if(hunqty=='-' || hunqty==''){
+        hunqty=0;
+    }
+    var twohunqty= document.getElementById('twohun_qty_'+itemcode).value;
+    if(twohunqty=='-' || twohunqty==''){
+        twohunqty=0;
+    }
+    var fivehunqty= document.getElementById('fivehun_qty_'+itemcode).value;
+    if(fivehunqty=='-' || fivehunqty==''){
+        fivehunqty=0;
+    }
+    var onekgqty= document.getElementById('onekg_qty_'+itemcode).value;
+    if(onekgqty=='-' || onekgqty==''){
+        onekgqty=0;
+    }
+    var fivekgqty= document.getElementById('fivekg_qty_'+itemcode).value;
+    if(fivekgqty=='-' || fivekgqty==''){
+        fivekgqty=0;
+    }
+    var twentyfivekgqty= document.getElementById('twentyfivekg_qty_'+itemcode).value;
+    if(twentyfivekgqty=='-' || twentyfivekgqty==''){
+        twentyfivekgqty=0;
+    }
+    var fiftykgqty= document.getElementById('fiftykg_qty_'+itemcode).value;
+    if(fiftykgqty=='-' || fiftykgqty==''){
+        fiftykgqty=0;
+    }
+    var hunprice= document.getElementById(itemcode+'_hundred_price').value;
+    if(hunprice=='-' || hunprice==''){
+        hunprice=0;
+    }
+    var twohunprice= document.getElementById(itemcode+'_twohundred_price').value;
+    if(twohunprice=='-' || twohunprice==''){
+        twohunprice=0;
+    }
+    var fivehunprice= document.getElementById(itemcode+'_fivehundred_price').value;
+    if(fivehunprice=='-' || fivehunprice==''){
+        fivehunprice=0;
+    }
+    var onekgprice= document.getElementById(itemcode+'_onekg_price').value;
+    if(onekgprice=='-' || onekgprice==''){
+        onekgprice=0;
+    }
+    var fivekgprice= document.getElementById(itemcode+'_fivekg_price').value;
+    if(fivekgprice=='-' || fivekgprice==''){
+        fivekgprice=0;
+    }
+    var twentyfivekgprice= document.getElementById(itemcode+'_twentyfivekg_price').value;
+    if(twentyfivekgprice=='-' || twentyfivekgprice==''){
+        twentyfivekgprice=0;
+    }
+    var fiftykgprice= document.getElementById(itemcode+'_fiftykg_price').value;
+    if(fiftykgprice=='-' || fiftykgprice==''){
+        fiftykgprice=0;
+    }
+
+    if(hunqty<0 || hunqty%1!=0 || twentyfivekgqty<0 || twentyfivekgqty%1!=0 || twohunqty<0 || twohunqty%1!=0 || fivehunqty<0 || fivehunqty%1!=0 || onekgqty<0 || onekgqty%1!=0 || fivekgqty<0 || fivekgqty%1!=0 || fiftykgqty<0 || fiftykgqty%1!=0){
+        alert('Quantity should be valid number');
+        $('#grandtotprice').val('');
+        $('#tot_weight_'+itemcodes).val('');
+        $('#tot_price_'+itemcodes).val('');
+        $('#tot_qty_'+itemcodes).val('');
+        $('#grandtotqty').val('');
+        document.getElementById("checkoutbtn").enabled = true;
+    }
+    else{
+        document.getElementById("checkoutbtn").enabled= false;
+        var total_qtyy=parseInt(hunqty)+parseInt(twohunqty)+parseInt(fivehunqty)+parseInt(onekgqty)+parseInt(fivekgqty)+parseInt(twentyfivekgqty)+parseInt(fiftykgqty);
+        var total_weight=(parseInt(hunqty)*100+parseInt(twohunqty)*200+parseInt(fivehunqty)*500+parseInt(onekgqty)*1000+parseInt(fivekgqty)*5000+parseInt(twentyfivekgqty)*25000+parseInt(fiftykgqty)*50000)/1000;
+        var total_price=(parseFloat((parseInt(hunqty)*parseFloat(hunprice))+(parseInt(twohunqty)*parseFloat(twohunprice))+(parseInt(fivehunqty)*parseFloat(fivehunprice))+(parseInt(onekgqty)*parseFloat(onekgprice))+(parseInt(fivekgqty)*parseFloat(fivekgprice))+(parseInt(twentyfivekgqty)*parseFloat(twentyfivekgprice))+(parseInt(fiftykgqty)*parseFloat(fiftykgprice)))).toFixed(2);
+        if(total_qtyy==0){
+            total_qtyy='';
+        }
+        if(total_weight==0){
+            total_weight='';
+            $('#tot_weight_'+itemcodes).val(total_weight);
+        }
+        else{
+            $('#tot_weight_'+itemcodes).val(total_weight+' kgs');
+        }
+        if(total_price==0){
+            total_price='';
+            $('#tot_price_'+itemcodes).val(total_price);
+        }
+        else{
+            $('#tot_price_'+itemcodes).val(total_price+' SGD.');
+        }
+        $('#tot_qty_'+itemcodes).val(total_qtyy);
+        var i=0;
+        var itemcodelist=new Array('Hello');
+        {% for item in commodityitems %}
+            itemcodelist[i]="{{ item.commodity_item_code }}";
+            i=i+1;
+        {% endfor %}
+        var grandtot=0.0;
+        var grandqty=0.0;
+        var tot_price=0;
+        for(i=0;i<itemcodelist.length;i++){
+            itemcodelist[i].toString();
+            tot_price= document.getElementById('tot_price_'+itemcodelist[i]).value;
+            tot_qty= document.getElementById('tot_qty_'+itemcodelist[i]).value;
+            if(tot_price=='') {
+                tot_price=0.0;
+            }
+            else{
+                tot_price=tot_price.slice(0,-5);
+            }
+            if(tot_qty=='') {
+                tot_qty=0.0;
+            }
+            grandtot=(parseFloat(parseFloat(grandtot)+parseFloat(tot_price))).toFixed(2);
+            grandqty=parseInt(parseInt(grandqty)+parseInt(tot_qty));
+        }
+        if(grandtot==0){
+            grandtot='';
+            $('#grandtotprice').val(grandtot);
+        }
+        else{
+            $('#grandtotprice').val(grandtot+' SGD.');
+        }
+        if(grandqty==0){
+            grandqty='';
+            $('#grandtotqty').val(grandqty);
+        }
+        else{
+            $('#grandtotqty').val(grandqty);
+        }
+    }
+  }
+</script>
+
+
+<script type="text/javascript">
+    function checkoutfn(){
+        var i=0;
+        var itemcodelist=new Array('Hello');
+        var itemnamelist=new Array('Hi');
+        {% for item in commodityitems %}
+            itemcodelist[i] = "{{ item.commodity_item_code }}";
+            itemnamelist[i] = "{{ item.item_desc }}";
+            itemcodelist[i] = itemcodelist[i].toString();
+            itemnamelist[i] = itemnamelist[i].toString();
+            i=i+1;
+        {% endfor %}
+        var groc_hun=new Array('hi');
+        var groc_twohun=new Array('hi');
+        var groc_fivehun=new Array('hi');
+        var groc_onekg=new Array('hi');
+        var groc_fivekg=new Array('hi');
+        var groc_twentyfivekg=new Array('hi');
+        var groc_fiftykg=new Array('hi');
+
+        var price_hun=new Array('hi');
+        var price_twohun=new Array('hi');
+        var price_fivehun=new Array('hi');
+        var price_onekg=new Array('hi');
+        var price_fivekg=new Array('hi');
+        var price_twentyfivekg=new Array('hi');
+        var price_fiftykg=new Array('hi');
+        var totqty=0;
+        var i=0;
+        var commoditynames=new Array('hi');
+        var commoditycodes=new Array('hi');
+        var groceries=new Array('hi');
+        {% for commodity in commodityitems %}
+            commoditynames[i] = "{{ commodity.item_desc }}";
+            commoditycodes[i] = "{{ commodity.commodity_item_code }}";
+            groceries[i] = "{{ commodity.commodity_code.grocery_code }}";
+            i=i+1;
+        {% endfor %}
+
+        for (i=0;i<itemcodelist.length;i++){
+            var hunqty= document.getElementById('hun_qty_'+itemcodelist[i]).value;
+            var twohunqty= document.getElementById('twohun_qty_'+itemcodelist[i]).value;
+            var fivehunqty= document.getElementById('fivehun_qty_'+itemcodelist[i]).value;
+            var onekgqty= document.getElementById('onekg_qty_'+itemcodelist[i]).value;
+            var fivekgqty= document.getElementById('fivekg_qty_'+itemcodelist[i]).value;
+            var twentyfivekgqty= document.getElementById('twentyfivekg_qty_'+itemcodelist[i]).value;
+            var fiftykgqty= document.getElementById('fiftykg_qty_'+itemcodelist[i]).value;
+        }
+
+        var qtyval=1;
+        for (i=0;i<itemcodelist.length;i++){
+                var hunqty= document.getElementById('hun_qty_'+itemcodelist[i]).value;
+                var twohunqty= document.getElementById('twohun_qty_'+itemcodelist[i]).value;
+                var fivehunqty= document.getElementById('fivehun_qty_'+itemcodelist[i]).value;
+                var onekgqty= document.getElementById('onekg_qty_'+itemcodelist[i]).value;
+                var fivekgqty= document.getElementById('fivekg_qty_'+itemcodelist[i]).value;
+                var twentyfivekgqty= document.getElementById('twentyfivekg_qty_'+itemcodelist[i]).value;
+                var fiftykgqty= document.getElementById('fiftykg_qty_'+itemcodelist[i]).value;
+
+                var hunprice= document.getElementById(itemcodelist[i]+'_hundred_price').value;
+                var twohunprice= document.getElementById(itemcodelist[i]+'_twohundred_price').value;
+                var fivehunprice= document.getElementById(itemcodelist[i]+'_fivehundred_price').value;
+                var onekgprice= document.getElementById(itemcodelist[i]+'_onekg_price').value;
+                var fivekgprice= document.getElementById(itemcodelist[i]+'_fivekg_price').value;
+                var twentyfivekgprice= document.getElementById(itemcodelist[i]+'_twentyfivekg_price').value;
+                var fiftykgprice= document.getElementById(itemcodelist[i]+'_fiftykg_price').value;
+
+                if(hunqty=='-' || hunqty==''){
+                    hunqty=0;
+                }
+                groc_hun[i]=hunqty;
+
+                if(twohunqty=='-' || twohunqty==''){
+                    twohunqty=0;
+                }
+                groc_twohun[i]=twohunqty;
+
+                if(fivehunqty=='-' || fivehunqty==''){
+                    fivehunqty=0;
+                }
+                groc_fivehun[i]=fivehunqty;
+
+                if(onekgqty=='-' || onekgqty==''){
+                    onekgqty=0;
+                }
+                groc_onekg[i]=onekgqty;
+
+                if(fivekgqty=='-' || fivekgqty==''){
+                    fivekgqty=0;
+                }
+                groc_fivekg[i]=fivekgqty;
+
+                if(twentyfivekgqty=='-' || twentyfivekgqty==''){
+                    twentyfivekgqty=0;
+                }
+                groc_twentyfivekg[i]=twentyfivekgqty;
+
+                if(fiftykgqty=='-' || fiftykgqty==''){
+                    fiftykgqty=0;
+                }
+                groc_fiftykg[i]=fiftykgqty;
+
+                if(hunprice=='-' || hunprice==''){
+                    hunprice=0;
+                }
+                price_hun[i]=hunprice;
+
+                if(twohunprice=='-' || twohunprice==''){
+                    twohunprice=0;
+                }
+                price_twohun[i]=twohunprice;
+
+                if(fivehunprice=='-' || fivehunprice==''){
+                    fivehunprice=0;
+                }
+                price_fivehun[i]=fivehunprice;
+
+
+                if(onekgprice=='-' || onekgprice==''){
+                    onekgprice=0;
+                }
+                price_onekg[i]=onekgprice;
+
+
+                if(fivekgprice=='-' || fivekgprice==''){
+                    fivekgprice=0;
+                }
+                price_fivekg[i]=fivekgprice;
+
+                if(twentyfivekgprice=='-' || twentyfivekgprice==''){
+                    twentyfivekgprice=0;
+                }
+                price_twentyfivekg[i]=twentyfivekgprice;
+
+                if(fiftykgprice=='-' || fiftykgprice==''){
+                    fiftykgprice=0;
+                }
+                price_fiftykg[i]=fiftykgprice;
+
+                if(hunqty<0 || twentyfivekgqty<0 || twohunqty<0 || fivehunqty<0 || onekgqty<0 ||fivekgqty<0 || fiftykgqty<0){
+                    alert('Quantity should not be negative');
+                    $('#grandtotpricepop').val('');
+                    $('#tot_price_'+itemcodes).val('');
+                    document.getElementById("checkoutbtn").disabled = false;
+                }
+                else{
+                    var groc_para = document.getElementById('groc_items');
+                    if(groc_hun[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_hun[i]+"</td><td>100gm</td><td>"+ hunprice +"</td><td>"+(parseFloat(hunprice*groc_hun[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                    if(groc_twohun[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_twohun[i]+"</td><td>200gm</td><td>"+ twohunprice +"</td><td>"+(parseFloat(twohunprice*groc_twohun[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                    if(groc_fivehun[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_fivehun[i]+"</td><td>500gm</td><td>"+ fivehunprice +"</td><td>"+(parseFloat(fivehunprice*groc_fivehun[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                    if(groc_onekg[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_onekg[i]+"</td><td>1kg</td><td>"+ onekgprice +"</td><td>"+(parseFloat(onekgprice*groc_onekg[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                    if(groc_fivekg[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_fivekg[i]+"</td><td>5kg</td><td>"+ fivekgprice +"</td><td>"+(parseFloat(fivekgprice*groc_fivekg[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                    if(groc_twentyfivekg[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_twentyfivekg[i]+"</td><td>25kg</td><td>"+ twentyfivekgprice +"</td><td>"+(parseFloat(twentyfivekgprice*groc_twentyfivekg[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                    if(groc_fiftykg[i]>0){
+                        groc_para.innerHTML += "<tr><td>"+qtyval+"</td><td>"+itemnamelist[i]+"</td><td>"+groc_fiftykg[i]+"</td><td>50kg</td><td>"+ fiftykgprice +"</td><td>"+(parseFloat(fiftykgprice*groc_fiftykg[i])).toFixed(2) +" SGD.</td>";
+                        qtyval=qtyval+1;
+                    }
+                }
+            <!--itemcodelist[i].toString();-->
+            <!--tot_price= document.getElementById('tot_price_'+itemcodelist[i]).value;-->
+            <!--tot_qty= document.getElementById('tot_qty_'+itemcodelist[i]).value;-->
+            <!--if(tot_price=='') {-->
+                <!--tot_price=0.0;-->
+            <!--}-->
+            <!--else{-->
+                <!--tot_price=tot_price.slice(0,-5);-->
+            <!--}-->
+            <!--if(tot_qty=='') {-->
+                <!--tot_qty=0.0;-->
+            <!--}-->
+            <!--grandtot=(parseFloat(parseFloat(grandtot)+parseFloat(tot_price))).toFixed(2);-->
+            <!--grandqty=parseInt(parseInt(grandqty)+parseInt(tot_qty));-->
+       }
+            <!--var groc_qty= new Array(groc_hun,groc_twohun,groc_fivehun,groc_onekg,groc_fivekg,groc_twentyfivekg,groc_fiftykg);-->
+            <!--console.log(groc_qty);-->
+
+            var groqtyhun = document.getElementById('grocqtyhun');
+            var groqtytwohun = document.getElementById('grocqtytwohun');
+            var groqtyfivehun = document.getElementById('grocqtyfivehun');
+            var groqtyonekg = document.getElementById('grocqtyonekg');
+            var groqtyfivekg = document.getElementById('grocqtyfivekg');
+            var groqtytwentyfivekg = document.getElementById('grocqtytwentyfivekg');
+            var groqtyfiftykg = document.getElementById('grocqtyfiftykg');
+
+            var gropricehun= document.getElementById('hunpricearr');
+            var gropricetwohun= document.getElementById('twohunpricearr');
+            var gropricefivehun= document.getElementById('fivehunpricearr');
+            var gropriceonekg= document.getElementById('onekgpricearr');
+            var gropricefivekg= document.getElementById('fivekgpricearr');
+            var gropricetwentyfivekg= document.getElementById('twentyfivekgpricearr');
+            var gropricefiftykg= document.getElementById('fiftykgpricearr');
+            var grandtotcheck= document.getElementById('grandtotcheck');
+            var grandtotprice= document.getElementById('grandtotprice').value;
+            var grandtotcheckin= document.getElementById('grandtotcheckin');
+            var commodity_names=document.getElementById('commodity_descs');
+            var grocery_names=document.getElementById('grocery_descs');
+            var commodity_codes=document.getElementById('commodity_codess');
+
+            commodity_codes.value=commoditycodes;
+            grocery_names.value=groceries;
+            commodity_names.value=commoditynames;
+            groqtyhun.value=groc_hun;
+            groqtytwohun.value=groc_twohun;
+            groqtyfivehun.value=groc_fivehun;
+            groqtyonekg.value=groc_onekg;
+            groqtyfivekg.value=groc_fivekg;
+            groqtytwentyfivekg.value=groc_twentyfivekg;
+            groqtyfiftykg.value=groc_fiftykg;
+
+            grandtotcheck.value=grandtotprice;
+            grandtotcheckin.value=grandtotprice;
+            var groqtyarra= document.getElementById('grocqtyhun');
+            console.log(groqtyhun.value);
+            console.log(commodity_names.value);
+
+            gropricehun.value=price_hun;
+            gropricetwohun.value=price_twohun;
+            gropricefivehun.value=price_fivehun;
+            gropriceonekg.value=price_onekg;
+            gropricefivekg.value=price_fivekg;
+            gropricetwentyfivekg.value=price_twentyfivekg;
+            gropricefiftykg.value=price_fiftykg;
+            console.log(gropricehun.value);
+    }
+</script>
+
+<script type="text/javascript">
+function relofn() {
+    window.location.reload(true);
+}
+</script>
+
+<script type="text/javascript">
+  $(document).keydown(function(event){
+        if(event.keyCode == 13){
+            document.getElementById("checkoutbtn").click();
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).on('submit','#checkoutForm',function(ed){
+        ed.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'groceries:grocery_list' pk=profile.pk %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                if(returndata.success === true){
+                    var xy=document.getElementById('succecont');
+                    var t_id=returndata.t_id;
+                    var t_amt=returndata.tot_amt;
+                    xy.innerHTML="Success! Groceries Bought for "+t_amt+" SGD! Transaction ID: "+t_id;
+                    document.getElementById("buygroc").disabled = false;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+                else{
+                    var xy=document.getElementById('succecont');
+                    xy.innerHTML="Failed! You do not have privilege to purchase more than your available balance!" ;
+                    document.getElementById("buygroc").disabled = false;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+            },
+            error: function () {
+                console.log("error in ajax form submission");
+            }
+         });
+    });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,1622 @@
+{% extends 'accounts/base.html' %}
+
+{% load staticfiles %}
+
+  {% block title %}
+  <title>ePaySave Wallet</title>
+  {% endblock %}
+
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--<script>-->
+  <!--$(document).ready(function(){-->
+      <!--$("#sortdiv").click(function(){-->
+          <!--$("#table_normal,reverse_table").toggle();-->
+      <!--});-->
+  <!--});-->
+<!--</script>-->
+
+<script language="javascript">
+function checkInput(ob) {
+  var invalidChars = /[^0-9.]/gi
+<!-- ^[1-9]\d*(\.\d+)?$  -->
+  <!--var invalidChars = /^([0-9])\.([0-9])/gi-->
+  if(invalidChars.test(ob.value)) {
+            ob.value = ob.value.replace(invalidChars,"");
+            alert('Type only numbers in amount!');
+      }
+}
+</script>
+
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
+  <link href="/static/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+  <link href="/static/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+
+
+
+<script>
+var n;
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+  clearTimeout (timer);
+  timer = setTimeout(callback, ms);
+ };
+})();
+
+$(function() {
+    $('.tooltip-wrapper').tooltip({position: "bottom"});
+});
+
+function disableSubmit() {
+  document.getElementById("confirm_submit").disabled = true;
+  document.getElementById('rightdisp').innerHTML='Type proper amount!';
+}
+
+function disableSubmitLoc() {
+  document.getElementById("confirm_submit_loc").disabled = true;
+  document.getElementById('rightdisploc').innerHTML='Type proper amount!';
+}
+
+
+<!--function getOption() {-->
+    <!--var obj = document.getElementById("select_id");-->
+    <!--var str1 = obj.options[obj.selectedIndex].text;-->
+    <!--var str2 = "US $";-->
+    <!--var str3 = "IND ₹";-->
+    <!--var str5 = "AEDir.";-->
+    <!--var str6 = "GBP £";-->
+    <!--var str7 = "EUR €";-->
+    <!--n=parseFloat(document.getElementById('amount').value)-->
+    <!--try {-->
+      <!--if (n<=0)  throw "Amount cannot be negative or zero. Refresh and type a proper amount!"-->
+    <!--}-->
+    <!--catch(err) {-->
+      <!--document.getElementById("displa").innerHTML= err;-->
+      <!--alert('Error! Amount attempted invalid!')-->
+      <!--disableSubmit()-->
+    <!--}-->
+
+    <!--if (typeof str1=="string" && typeof str2=="string" && str1 === str2){-->
+      <!--n=parseFloat(document.getElementById('amount').value)*1.38;-->
+      <!--document.getElementById("demo").innerHTML = n +' '+'SGD';-->
+      <!--document.getElementById("currency").innerHTML = 'x1.38';-->
+  <!--}-->
+    <!--if (typeof str1=="string" && typeof str3=="string" && str1 === str3){-->
+      <!--n=parseFloat(document.getElementById('amount').value)*0.0188;-->
+      <!--document.getElementById("demo").innerHTML = n+' '+'SGD';-->
+      <!--document.getElementById("currency").innerHTML = 'x0.0188';-->
+  <!--}-->
+    <!--if (typeof str1=="string" && typeof str5=="string" && str1 === str5){-->
+      <!--n=parseFloat(document.getElementById('amount').value)*0.38;-->
+      <!--document.getElementById("demo").innerHTML = n+' '+'SGD';-->
+      <!--document.getElementById("currency").innerHTML = 'x0.38';-->
+  <!--}-->
+  <!--if (typeof str1=="string" && typeof str6=="string" && str1 === str6){-->
+    <!--n=parseFloat(document.getElementById('amount').value)*1.77;-->
+    <!--document.getElementById("demo").innerHTML = n+' '+'SGD';-->
+    <!--document.getElementById("currency").innerHTML = 'x1.77';-->
+  <!--}-->
+  <!--if (typeof str1=="string" && typeof str7=="string" && str1 === str7){-->
+    <!--n=parseFloat(document.getElementById('amount').value)*1.58;-->
+    <!--document.getElementById("demo").innerHTML = n+' '+'SGD';-->
+    <!--document.getElementById("currency").innerHTML = 'x1.58';-->
+  <!--}-->
+
+
+  <!--var mobmed = window.matchMedia("(max-width: 820px)")-->
+  <!--var mobmed1= window.matchMedia("(min-width: 821px)")-->
+  <!--medfunc(mobmed)-->
+  <!--medfunc(mobmed1)-->
+  <!--mobmed.addListener(medfunc)-->
+  <!--mobmed1.addListener(medfunc)-->
+
+  <!--function medfunc(){-->
+    <!--if (mobmed.matches){-->
+        <!--document.getElementById("currency").style = "position: absolute;font-size:13px;padding:3px 0;border:1px solid #ed2939;margin:-20px 0px 0px -2px; visibility:visible;";-->
+        <!--document.getElementById("demo").style = "margin:15px 0px 0px -13px;font-size:13px;position: absolute;padding:3px 0;border:1px solid #ed2939;visibility:visible;";-->
+      <!--}-->
+    <!--if (mobmed1.matches){-->
+        <!--document.getElementById("currency").style = "position: absolute;font-size:13px;padding:3px 0;border:1px solid #ed2939;margin:0px 0px 0px -45px; visibility:visible;";-->
+        <!--document.getElementById("demo").style = "margin:0px 0px 0px 18px;font-size:13px;position: absolute;padding:3px 0;border:1px solid #ed2939;visibility:visible;";-->
+      <!--}-->
+  <!--}-->
+
+<!--var message, x,nloc;-->
+<!--message = document.getElementById("disp");-->
+<!--message.innerHTML = "";-->
+<!--x = "{{ wallet.cash_balance }}";-->
+<!--try {-->
+  <!--if (Number(n)>Number(x))  throw "Amount specified exceeds wallet balance! Refresh and do a valid transaction.!"-->
+<!--}-->
+<!--catch(err) {-->
+  <!--message.innerHTML= err;-->
+  <!--alert('Error! Cannot transfer more than available balance.')-->
+  <!--disableSubmit()-->
+<!--}-->
+<!--}-->
+
+<!--function checkloc(){-->
+  <!--var nloc = parseFloat(document.getElementById('amount_loc').value);-->
+  <!--var x,message;-->
+  <!--message = document.getElementById("disp");-->
+  <!--message.innerHTML = "";-->
+  <!--x = "{{ wallet.cash_balance }}";-->
+  <!--try {-->
+    <!--if (Number(nloc)>Number(x))  throw "Amount specified exceeds wallet balance! Refresh and do a valid transaction.!";-->
+  <!--}-->
+  <!--catch(err) {-->
+    <!--message.innerHTML= err;-->
+    <!--alert('Error! Cannot transfer more than available balance.')-->
+    <!--document.getElementById("tickmark").innerHTML="❌";-->
+    <!--disableSubmitLoc();-->
+  <!--}-->
+
+  <!--var nlocal=parseFloat(document.getElementById('amount_loc').value)-->
+  <!--try {-->
+    <!--if (nlocal<=0)  throw "Amount cannot be negative or zero. Refresh and type a proper amount!"-->
+  <!--}-->
+  <!--catch(err) {-->
+    <!--document.getElementById("displa").innerHTML= err;-->
+    <!--document.getElementById("tickmark").innerHTML="❌";-->
+    <!--alert('Error! Amount attempted invalid!')-->
+    <!--disableSubmitLoc();-->
+  <!--}-->
+  <!--if (document.getElementById("tickmark").innerHTML!=="❌"){-->
+  <!--document.getElementById("tickmark").innerHTML="✔"-->
+<!--}-->
+<!--}-->
+
+
+</script>
+
+{% endblock%}
+
+{% block wallet %}
+
+<div class="pt-2" style="margin:3px 0;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px;">Balance :{% block wallet_cash %}
+    {{wallet.wallet_bal}} SGD.
+    {% endblock %}
+  </p>
+  </a>
+  <a class="nav-item nav-link navbar-light"style="color:rgb(255,255,255);font-size:13px;margin:5px 0;line-height:0.5px;" href="{% url 'accounts:history_transac' pk=profile.pk %}">Wallet Transactions</a>
+</div>
+
+
+<a class="nav-item pt-3 nav-link navbar-light" style="color:rgb(255,255,255);" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+<img src="{% static 'wallet-icon.png' %}" height=28 width=24 class="pb-1 d-inline-block alighn-top" />
+</a>
+
+<div class="pt-2" style="margin-top:3px;">
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Cash :{% block cash %}
+    {{wallet.cash_balance}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Savings :{% block savings %}
+    {{wallet.savings}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Loan amt :{% block loan %}
+    {{wallet.loan_amt}} SGD.
+    {% endblock %}
+</p>
+  </a>
+
+
+</div>
+
+<div class="pt-2 pl-2" style="margin-top:3px;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Recycle : {% block recycle %}
+    {{wallet.recycle_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Incentive : {% block incentive %}
+    {{wallet.incentive_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Crowd fund: {% block crowd %}
+    {{wallet.crowd_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+
+
+</div>
+
+{% endblock %}
+
+{% block transfer %}
+
+           <button type="button" name="transfer_cash" id="transfer_cash" class="tranbtn btn btn-sm" data-toggle="modal" data-target="#transferModal">Transfer Cash</button>
+
+{% endblock %}
+
+{% block content %}
+
+
+{% if invalid %}
+
+  <h2 class="pt-3 text-center"> Please enter a valid integer amount in cash</h2>
+
+{% else %}
+
+{% if cash %}
+
+<br>
+  <div style="font-weight:700;">Successfully Requested to add <span style="color:red !important;">--{{ w }}.0 SGD--</span> cash to your wallet! We will get back to you soon.</div>
+<div class="row pb-3" style="border-bottom:1px solid black;">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Transaction ID of Request : </div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="font-weight:700; color:#007bff !important;">{{ t_id }}</div>
+</div>
+
+{% elif savings %}
+<br>
+<div style="font-weight:700;">Successfully Requested to add <span style="color:red !important;">--{{ w }}.0 SGD--</span> savings to your wallet! We will get back to you soon.</div>
+<br>
+<div class="row">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Transaction ID of Request : </div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="font-weight:700; color:#007bff !important;">{{ t_id }}</div>
+</div>
+  <br>
+<div class="row">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Description:</div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="border:1px solid black;background-color:#c4ded6;font-weight:550; border-radius:10px;">{{ wallet.wallet_savings_desc }}</div>
+</div>
+  <br>
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-xl-3 col-3 col-lg-3">
+      <div style="display:inline-block;font-weight:700;">Bill receipt provided:</div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-xl-6 col-6 col-lg-6">
+      {% if image %}
+        <img src="{{ wallet.savings_img.url }}" style="height:270px;display:inline-block;" class='img-fluid profimg' alt="Cannot be found!">
+      {% else %}
+        <p style="display:inline-block;font-weight:600;">--No bill receipt image--</p>
+        <br> <br> <br> <br> <br> <br>
+      {% endif %}
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<footer style="font-weight:700;text-align:center;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a>
+</footer>
+
+{% elif crowd %}
+<br>
+<div style="font-weight:700;">Successfully Requested to add <span style="color:red !important;">--{{ w }}.0 SGD--</span> crowd to your wallet! We will get back to you soon.</div>
+<br>
+<div class="row">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Transaction ID of Request : </div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="font-weight:700; color:#007bff !important;">{{ t_id }}</div>
+</div>
+  <br>
+<div class="row">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Description:</div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="border:1px solid black;background-color:#c4ded6;font-weight:600; border-radius:10px;">{{ wallet.wallet_crowd_desc }}</div>
+</div>
+  <br>
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-xl-3 col-3 col-lg-3">
+      <div style="display:inline-block;font-weight:700;">Bill receipt provided:</div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-xl-6 col-6 col-lg-6">
+      {% if image %}
+        <img src="{{ wallet.crowd_img.url }}" style="height:270px;display:inline-block;" class='img-fluid profimg' alt="Cannot be found!">
+      {% else %}
+        <p style="display:inline-block;font-weight:600;">--No bill receipt image--</p>
+        <br> <br> <br> <br> <br> <br>
+      {% endif %}
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<footer style="font-weight:700;text-align:center;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a>
+</footer>
+
+
+
+
+{% elif loan %}
+
+<br>
+<div style="font-weight:700;">Successfully Requested to add <span style="color:red !important;">--{{ w }}.0 SGD--</span> loan to your wallet! We will get back to you soon.</div>
+<br>
+<div class="row">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Transaction ID of Request : </div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="font-weight:700; color:#007bff !important;">{{ t_id }}</div>
+</div>
+  <br>
+<div class="row">
+  <div class='col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3' style="font-weight:700;">Description:</div>
+  <div class='col-sm-4 col-md-4 col-lg-4 col-xl-4 col-4' style="border:1px solid black;background-color:#c4ded6;font-weight:550; border-radius:10px;">{{ wallet.wallet_loan_desc }}</div>
+</div>
+  <br>
+<div class="row">
+    <div class="col-sm-3 col-md-3 col-xl-3 col-3 col-lg-3">
+      <div style="display:inline-block;font-weight:700;">Bill receipt provided:</div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-xl-6 col-6 col-lg-6">
+      {% if image %}
+        <img src="{{ wallet.wallet_img.url }}" style="height:270px;display:inline-block;" class='img-fluid profimg' alt="Cannot be found!">
+      {% else %}
+        <p style="display:inline-block;font-weight:600;">--No bill receipt image--</p>
+        <br> <br> <br> <br> <br> <br>
+      {% endif %}
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<footer style="font-weight:700;text-align:center;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a>
+</footer>
+
+
+{% elif failed %}
+<br>
+<br>
+<h4>Error! You tried to transfer to your self!!</h4>
+<br>
+<footer style="font-weight:650;text-align:center;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a> and transfer properly!
+</footer>
+
+{% elif mob_wrong %}
+<br>
+<br>
+<h4>Error! You cannot transfer to account that does not exist! Please ask your receiver to register to this site and try again!</h4>
+<br>
+<footer style="font-weight:650;text-align:center;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a>!
+</footer>
+
+{% elif bal_low %}
+<br>
+<br>
+<h4>Error! You tried to transfer more than your available account balance!</h4>
+<br>
+<footer style="font-weight:650;text-align:center;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a> to transfer a proper amount!
+</footer>
+
+
+{% elif success %}
+<br>
+<br>
+
+<h4>Successfully Transferred {{ a }} SGD to {{ prof.first_name }} {{ prof.last_name }}!</h4>
+<h4>Transaction ID : {{ t_id }}</h4>
+<p style="font-weight:650;">Get back to <a href="{% url 'accounts:wallet_view' pk=profile.pk %}">Wallet page!</a>
+</p>
+
+
+{% else %}
+{% if pk == profile.pk %}
+<!--<form id="wallet_form_one" method="post" enctype="multipart/form-data">-->
+  <!--{% csrf_token %}-->
+
+        <section class="s-space-bottom-full bg-accent-shadow-body">
+            <div class="container">
+                <div class="row pt-5">
+                    <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12">
+                        <div class="sidebar-item-box">
+                            <div class="gradient-wrapper">
+                                <div class="gradient-title titlecolor">
+                                    <h2 class="text-center pt-3">Wallet Information</h2>
+                                </div>
+                                <hr>
+                                <ul class="sidebar-seller-information padleftzero">
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'aa.png' %}" alt="user" class="img-fluid pull-left" height="50" width="40">
+                                            <div class="media-body">
+                                                <span>Wallet Balance</span>
+                                                <h6>{{ wallet.wallet_bal }} SGD </h6>
+                                            </div>
+                                        </div>
+                                        <p class="pendingwalletreq">
+                                            <span class="spanpend"> Pending Cash Requests: </span>
+                                                {{ wallet.wallet_cash_req }} SGD.
+                                        </p>
+                                    </li>
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'b.png' %}" alt="user" class="img-fluid pull-left" height="50" width="40">
+                                            <div class="media-body" style="position:relative;">
+                                                <span>Cash Balance</span>
+                                                <h6>{{ wallet.cash_balance }} SGD </h6>
+                                            </div>
+
+                                              <!--<input type="button"class="btn-sm btn btn-default cashtopbtn" value="Topup">-->
+
+                                              <button type="button" name="wallet_cash_add" id="cash_id" class="btn btn-danger btn-sm cashlowbtn" data-toggle="modal" data-target="#cashModal">Topup</button>
+                                               <button type="button" name="wallet_cash_add" id="transfer_cash_two" class="tranlowbtn btn btn-sm btn-danger" data-toggle="modal" data-target="#transferModal">Transfer</button>
+
+                                              <div class="modal fade" id="cashModal" role="dialog">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+                                                    <div class="">
+                                                      <button type="button" onclick="relofn()" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="text-center pt-3 pb-3">Topup Cash Balance</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                          <form enctype="multipart/form-data" method="post" id="cashForm">
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="cash_req" style="font-weight:500;">Amount:</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                  <input type="text" id="cash_req" name="cash_req" onkeyup="checkInput(this)" class="col-sm-8 col-lg-8 col-md-8 col-8" style="text-align:center; width:160px;"><span class="moneyspan">SGD</span>
+                                                                  <input type="hidden" value="{{ profile.pk }}" name="profpk1" id="profpk1">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="cash_desc" style="font-weight:500;">Bill description:</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <textarea name="cash_desc" id="cash_desc" rows="1" cols="10" class="col-sm-11 col-lg-11 col-md-11 col-11" style="text-align:center; width:160px;"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-center">
+                                                              <input type="file" name="cash_img" id="cash_img" class="pb-2 pt-1">
+                                                            </div>
+                                                              <div class="text-center">
+                                                                  <button type="submit" id="submit_cash" name="submit_cash_req" class="btn btn-danger btn-sm" style="margin-bottom: 20px;margin-left: 30px;">Submit</button>
+                                                              </div>
+                                                            <div class="pt-3 pb-3">
+                                                               <span class="text-center " style="color:#ed2939;font-weight:600;" id="cashcont"></span>
+                                                            </div>
+                                                          </form>
+                                                    </div>
+                                                  </div>
+
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </li>
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'c.png' %}" alt="user" class="img-fluid pull-left" height="50" width="40">
+                                            <div class="media-body">
+                                                <span>Savings</span>
+                                                <h6>{{ wallet.savings }} SGD </h6>
+                                            </div>
+
+                                              <button type="button" style="border:1px solid black;" name="wallet_cash_add" id="savings_id" class="btn btn-danger btn-sm cashtopbtn" data-toggle="modal" data-target="#saveModal">Topup</button>
+
+                                              <div class="modal fade" id="saveModal" role="dialog">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+                                                    <div class="">
+                                                      <button type="button" class="close" data-dismiss="modal" onclick="relofn()">&times;</button>
+                                                      <h4 class="text-center pt-3 pb-3">Topup Savings Balance</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <form enctype="multipart/form-data" method="post" id="savingsForm">
+                                                          {% csrf_token %}
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="save_req" style="font-weight:500;">Amount:</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                  <input name="save_req" id="save_req" onkeyup="checkInput(this)" class="col-sm-9 col-lg-9 col-md-9 col-9" style="text-align:center; width:160px;"><span class="moneyspan">SGD</span>
+                                                                  <input type="hidden" value="{{ profile.pk }}" name="profpk2" id="profpk2">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="savings_desc" style="font-weight:500;">Bill description:</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <textarea name="savings_desc" id="savings_desc" rows="1" cols="25" class="col-sm-11 col-lg-11 col-md-11 col-11" style="text-align:center; width:160px;"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-center">
+                                                              <input type="file" name="save_img" id="save_img" class="pb-2 pt-1">
+                                                            </div>
+                                                            <div class="text-center">
+                                                              <button type="submit" id="submit_save" name="submit_save_req" class="btn btn-danger btn-sm" style="margin-bottom: 20px;margin-left: 30px;">Submit</button>
+                                                            </div>
+                                                            <div class="pt-3 pb-3">
+                                                               <span class="text-center " style="color:#ed2939;font-weight:600;" id="savingscont"></span>
+                                                            </div>
+                                                      </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </li>
+
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'f.png' %}" alt="user" class="img-fluid pull-left" height="40" width="40">
+                                            <div class="media-body">
+                                                <span>Crowd Funds</span>
+                                                <h6>{{ wallet.crowd_wallet }} SGD </h6>
+                                            </div>
+                                              <button type="button" style="border:1px solid black;" name="wallet_crowd_add" id="crowd_id" class="btn btn-danger btn-sm cashtopbtn" data-toggle="modal" data-target="#crowdModal">Topup</button>
+
+                                              <div class="modal fade" id="crowdModal" role="dialog">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+                                                    <div class="">
+                                                      <button type="button" class="close" onclick="relofn()" data-dismiss="modal">&times;</button>
+                                                      <h4 class="text-center pt-3 pb-3">Topup Crowd Balance</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <form enctype="multipart/form-data" method="post" id="crowdForm">
+                                                          {% csrf_token %}
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="crowd_req" style="font-weight:500;">Amount:</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                  <input name="crowd_req" id="crowd_req" onkeyup="checkInput(this)" class="col-sm-9 col-lg-9 col-md-9 col-9" style="text-align:center; width:160px;"><span class="moneyspan">SGD</span>
+                                                                  <input type="hidden" value="{{ profile.pk }}" name="profpk3" id="profpk3">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                    <div class="col-4">
+                                                                        <label for="crowd_desc" style="font-weight:500;">Bill description:</label>
+                                                                    </div>
+                                                                    <div class="col-8">
+                                                                        <textarea name="crowd_desc" id="crowd_desc" rows="1" cols="25" class="col-sm-11 col-lg-11 col-md-11 col-11" style="text-align:center; width:160px;"></textarea>
+                                                                    </div>
+                                                            </div>
+
+                                                            <div class="text-center">
+                                                              <input type="file" name="crowd_img" id="crowd_img" class="pb-2 pt-1">
+                                                            </div>
+                                                            <div class="text-center">
+                                                              <button type="submit" id="submit_crowd" name="submit_crowd_req" class="btn btn-danger btn-sm" style="margin-bottom: 20px;margin-left: 30px;">Submit</button>
+                                                            </div>
+                                                            <div class="pt-3 pb-3">
+                                                               <span class="text-center " style="color:#ed2939;font-weight:600;" id="crowdcont"></span>
+                                                            </div>
+                                                      </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </li>
+
+
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'h.png' %}" alt="user" class="img-fluid pull-left" height="50" width="40">
+                                            <div class="media-body">
+                                                <span>Loan Taken</span>
+                                                <h6>{{ wallet.loan_amt }} SGD </h6>
+                                            </div>
+                                              <button type="button" style="border:1px solid black;" name="wallet_loan_add" id="loan_id" class="btn btn-danger btn-sm reqtopbtn" data-toggle="modal" data-target="#loanModal">Request</button>
+
+                                              <div class="modal fade" id="loanModal" role="dialog">
+                                                <div class="modal-dialog">
+
+                                                  <div class="modal-content">
+                                                    <div class="">
+                                                      <button type="button" class="close" onclick="relofn()" data-dismiss="modal">&times;</button>
+                                                      <h4 class="text-center pt-3 pb-3">Request For Loan</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <form enctype="multipart/form-data" method="post" id="loanForm">
+                                                          {% csrf_token %}
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="loan_req" style="font-weight:500;">Amount:</label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                  <input name="loan_req" id="loan_req" onkeyup="checkInput(this)" class="col-sm-9 col-lg-9 col-md-9 col-9" style=" width:160px;text-align:center;"><span class="moneyspan">SGD</span>
+                                                                  <input type="hidden" value="{{ profile.pk }}" name="profpk4" id="profpk4">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                    <div class="col-4">
+                                                                        <label for="loan_desc" style="font-weight:500;">Bill description:</label>
+                                                                    </div>
+                                                                    <div class="col-8">
+                                                                        <textarea name="loan_desc" id="loan_desc" rows="1" cols="25" class="col-sm-11 col-lg-11 col-md-11 col-11" style="text-align:center; width:160px;"></textarea>
+                                                                    </div>
+                                                            </div>
+
+                                                            <div class="text-center">
+                                                              <input type="file" name="loan_img" id="loan_img" class="pb-2 pt-1">
+                                                            </div>
+                                                            <div class="text-center">
+                                                              <button type="submit" id="submit_loan" name="submit_loan_req" class="btn btn-danger btn-sm" style="margin-bottom: 20px;margin-left: 30px;">Submit</button>
+                                                            </div>
+                                                            <div class="pt-3 pb-3">
+                                                               <span class="text-center " style="color:#ed2939;font-weight:600;" id="loancont"></span>
+                                                            </div>
+                                                      </form>
+
+                                                    </div>
+                                                  </div>
+
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </li>
+
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'e.png' %}" alt="user" class="img-fluid pull-left" height="50" width="40">
+                                            <div class="media-body">
+                                                <span>Incentive Funds</span>
+                                                <h6>{{ wallet.incentive_wallet }} SGD </h6>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li style="list-style:none;">
+                                        <div class="media">
+                                            <img src="{% static 'g.png' %}" alt="user" class="img-fluid pull-left" height="50" width="40">
+                                            <div class="media-body">
+                                                <span>Recycle Funds</span>
+                                                <h6>{{ wallet.recycle_wallet }} SGD </h6>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-12">
+                        <div class="gradient-wrapper item-mb">
+                            <div class="gradient-title titlecolor">
+                                <h2 class="text-center pt-3">Services</h2>
+                            </div>
+                            <hr>
+                            <div class="gradient-padding reduce-padding">
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="{% url 'merchants:buyticks' pk=profile.pk %}" style="color:black;">Buy Tickets</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h6 class="title-medium-dark mb-none">
+                                <a href="{% url 'groceries:grocery_list' pk=profile.pk %}" style="color:black;">Purchase Grocery Items</a>
+                            </h6>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Groceries</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h6 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h6>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h5 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h5>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+
+            </div>
+           </div>
+		</div>
+        </section>
+
+<!--</form>-->
+
+
+  <!--<div class="row">-->
+    <!--<div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 col-8">-->
+    <!--</div>-->
+    <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-8">-->
+      <!--<p id='leftdisp'></p>-->
+    <!--</div>-->
+    <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-2">-->
+      <!--<p style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin:-38px 0px 0px -8px;" id='rightdisp'></p>-->
+    <!--</div>-->
+  <!--</div>-->
+
+
+<!--<form method="POST">-->
+
+<!--<div class="col-md-9 col-sm-9 col-lg-9 col-xl-9 col-9">-->
+    <!--<p style="font-weight:650;">Transfer Local (Singapore): </p>-->
+<!--</div>-->
+<!--<div class="row pt-3">-->
+  <!--{% csrf_token %}-->
+  <!--<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 col-5 text-center">-->
+    <!--<input class="col-md-10 col-xl-10 col-10 col-sm-10 col-lg-10" type="number" id="amount_loc" name="amount_loc" placeholder="Amount" style="text-align: center;border:1px solid #ed2939;" />-->
+  <!--</div>-->
+  <!--<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 col-2 text-center">-->
+    <!--<textarea rows="1" cols="4" readonly style="cursor: not-allowed;font-size:14px;font-weight:600;margin-left:-10px;">SGD</textarea>-->
+  <!--</div>-->
+
+  <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-4 text-center" style="positon:relative;">-->
+    <!--<input type="button" onclick="checkloc()" name="checkbtn" value="Check" style="position:absolute;border:1px solid black;" />-->
+    <!--<strong id="tickmark" style="margin-left:65px;position:absolute;"></strong>-->
+  <!--</div>-->
+<!--<br> <br>-->
+<!--<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 col-9 text-center">-->
+  <!--<input class="col-md-5 col-sm-5 col-lg-5 col-xl-5 col-8" type="text" placeholder="mob no" onkeyup="mobileLocFunction()" name="mobile_no_loc" id="mobile_no_loc" style="text-align:center;border:1px solid #ed2939;display:inline-block;">-->
+  <!--<div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3" style="display:inline-block;">-->
+    <!--<button id="confirm_submit_loc" type="submit" class="btn btn-primary btn-sm">Confirm</button>-->
+  <!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<br>-->
+
+<!--<div class="row">-->
+  <!--<div class="col-md-8 col-sm-8 col-lg-7 col-xl-6 d-none d-sm-block">-->
+  <!--</div>-->
+  <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-7">-->
+    <!--<p id='leftlocdisp'></p>-->
+  <!--</div>-->
+  <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-6 text-center">-->
+    <!--<p style="font-weight: 600;display:block;font-size:13px;padding:3px 1px; margin:-12px 0 0 118px;" id='rightdisploc'></p>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<div id="disp" name="disp" style="font-weight:600;"></div>-->
+<!--<div id="displa" name="displa" style="font-weight:600;"></div>-->
+
+
+    <div class="text-center" id="reverse_table">
+      <table class="table table-hover table-bordered headsp" id="default-datatable" style="transform:scale(0.9,1.0);">
+    <h5 class='text-center'>Wallet Transactions </h5>
+
+          <thead >
+          <tr class='row rowhead'>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Date</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Transaction ID</th>
+              <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6" style="position:relative">Time</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Sent by</th>
+            <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">Amount</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Received by</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for tran in transact_rev %}
+            {% if tran.sender.first_name == profile.first_name %}
+
+                {% if tran.receiver.first_name == "Admin" %}
+                    <tr class="row rowsp">
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                      <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+                      <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Admin</td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+                    </tr>
+                {% elif tran.receiver.first_name != "Admin" %}
+                    <tr class="row rowsp">
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.receiver.first_name}} {{ tran.receiver.last_name }}</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+                </tr>
+                {% endif %}
+            {% elif tran.receiver.first_name == profile.first_name %}
+                  {% if tran.sender.first_name == "Admin" %}
+                      <tr class="row rowsp">
+                        <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                        <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                        <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                        <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Admin</td>
+                        <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                        <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+                        <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+                      </tr>
+                  {% elif tran.sender.first_name != "Admin" %}
+                      <tr class="row rowsp">
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                      <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.sender.first_name}} {{ tran.sender.last_name }}</td>
+                      <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+                      <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+                    </tr>
+                  {% endif %}
+            {% endif %}
+          {% endfor %}
+          </tbody>
+          <tfoot style="display:none;">
+          <tr class='row rowhead'>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Date</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Transaction ID</th>
+              <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6" style="position:relative">Time</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Sent by</th>
+            <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">Amount</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Received by</th>
+            <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Status</th>
+          </tr>
+          </tfoot>
+      </table>
+    <div class="text-center">
+        <a href="{% url 'accounts:history_transac' pk=profile.pk %}">view more transactions..</a>
+    </div>
+
+    </div>
+
+
+<!--<form method="POST">-->
+
+  <!--<div class="col-md-9 col-sm-9 col-9 col-lg-9 col-xl-9">-->
+    <!--<p style="font-weight:650;">Transfer Cash International: </p>-->
+  <!--</div>-->
+
+<!--{% csrf_token %}-->
+
+  <!--<div class="row pt-3">-->
+    <!--<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 col-5 text-center">-->
+      <!--<input type="number" id="amount" class="col-md-10 col-xl-10 col-10 col-sm-10 col-lg-10" name="amount" placeholder="Amount" style="text-align: center;border:1px solid #ed2939;">-->
+    <!--</div>-->
+
+<!--<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 col-2 text-center" style="position:relative;">-->
+  <!--<select id='select_id' style="margin:-20px 0 0px 0;text-align:center;border:1px solid black;position:absolute;">-->
+      <!--<option>US $ </option>-->
+      <!--<option>IND <span>&#8377;</span></option>-->
+      <!--<option>AEDir.</option>-->
+      <!--<option>GBP £</option>-->
+      <!--<option>EUR €</option>-->
+  <!--</select>-->
+  <!--<input type="button" onclick="getOption()" name="" value="Convert" style="border:1px solid black;position:absolute;margin:14px 0 0 0;" />-->
+
+<!--</div>-->
+
+<!--<div class='col-md-3 col-sm-3 col-3 col-lg-3 col-xl-3 text-center' style="position:relative;">-->
+  <!--<textarea readonly name="currency" rows="1" cols="7" id="currency" style="position: absolute;visibility: hidden;font-size:13px;padding:3px 0;border:1px solid #ed2939;margin:0px 0px 0px -60px;" class="text-center"></textarea>-->
+  <!--<textarea readonly rows="1" cols="12" style="margin:0px 0 0 5px;font-size:13px;position: absolute;visibility: hidden;padding:3px 0;border:1px solid #ed2939;" id="demo" name="demo" class="text-center"></textarea>-->
+<!--</div>-->
+
+      <!--<br><br><br>-->
+  <!--<div class="col-md-5 col-sm-5 col-lg-5 col-9 col-xl-5 text-center">-->
+    <!--<input class="col-md-5 col-xl-5 col-lg-5 col-8 col-sm-5" type="text" placeholder="mob no" onkeyup="mobileFunction()" name="mobile_no_to" id="mobile_no_to" size="15" style="text-align:center;border:1px solid #ed2939;display:inline-block;">-->
+    <!--<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 col-3 text-center tooltip-wrapper" style="display:inline-block;">-->
+      <!--<button id="confirm_submit"  type="submit" class="btn btn-primary btn-sm">Confirm</button>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!--</form>-->
+
+<br>
+
+
+
+                      <div class="modal fade" id="transferModal" role="dialog">
+                        <div class="modal-dialog" style="padding-top:150px;">
+                          <div class="modal-content">
+                            <div class="">
+                              <button type="button" class="close" onclick="relofn()" style="font-size:30px;padding:5px;" data-dismiss="modal">&times;</button>
+                              <h4 class="text-center pt-3 pb-3" style="background-color:#ed2939;color:white;">Transfer Cash Local</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div id="disp" name="disp" style="font-weight:600;"></div>
+                                <div id="displa" name="displa" style="font-weight:600;"></div>
+
+                              <form method="POST" id="transferForm" enctype="multipart/form-data">
+                                  {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="amount_loc" style="font-weight:500;">Amount:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input class="col-sm-9 col-lg-9 col-md-9 col-9" onkeyup="checkInput(this)" type="number" id="amount_loc" name="amount_loc" style="width:160px;text-align: center;border:1px solid #ed2939;" /><span class="moneyspan">SGD</span>
+                                    </div>
+                                </div>
+                                <!--<div class="row">-->
+                                    <!--<div class="col-4">-->
+                                    <!--</div>-->
+                                    <!--<div class="col-8">-->
+                                  <!--<div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 col-4 text-center" style="positon:relative;">-->
+                                    <!--<input type="button" onclick="checkloc()"  class="btn btn-primary btn-sm" name="checkbtn" value="Check" style="position:absolute;" />-->
+                                    <!--<strong id="tickmark" style="margin-left:65px;position:absolute;"></strong>-->
+                                  <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<br><br>-->
+                                 <div class="row">
+                                    <div class="col-4">
+                                        <label for="mobile_no_loc" style="font-weight:500;">Transfer To:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input class="col-md-11 col-sm-11 col-lg-11 col-xl-11 col-11" type="text" placeholder="mobile no" onkeyup="mobileLocFunction()" name="mobile_no_loc" id="mobile_no_loc" style="width:160px;text-align:center;border:1px solid #ed2939;display:inline-block;">
+                                    </div>
+                                 </div>
+                                  <div class="row">
+                                      <div class="col-4">
+                                      </div>
+                                      <div class="col-4 text-center" style="margin-left: 13px;">
+                                        <button id="confirm_submit_loc" type="submit" class="btn btn-danger btn-sm">Confirm</button>
+                                      </div>
+                                  </div>
+                                  <div class="pt-3 pb-3">
+                                    <span class="text-center" style="color:#ed2939;font-weight:600;" id="transfercont"></span>
+                                  </div>
+
+                                <!--<div class="row pt-3">-->
+                                  <!--<div class="col-md-3 col-sm-3 col-lg-3 col-xl-3 col-5 text-center">-->
+                                    <!--<input class="col-md-10 col-xl-10 col-10 col-sm-10 col-lg-10" type="number" id="amount_loc" name="amount_loc" placeholder="Amount" style="text-align: center;border:1px solid #ed2939;" />-->
+                                  <!--</div>-->
+                                  <!--<div class="col-md-1 col-sm-1 col-lg-1 col-xl-1 col-2 text-center">-->
+                                    <!--<textarea rows="1" cols="4" readonly style="cursor: not-allowed;font-size:14px;font-weight:600;margin-left:-10px;">SGD</textarea>-->
+                                  <!--</div>-->
+
+                                  <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-4 text-center" style="positon:relative;">-->
+                                    <!--<input type="button" onclick="checkloc()" name="checkbtn" value="Check" style="position:absolute;border:1px solid black;" />-->
+                                    <!--<strong id="tickmark" style="margin-left:65px;position:absolute;"></strong>-->
+                                  <!--</div>-->
+                                <!--<br> <br>-->
+                                <!--<div class="col-md-5 col-sm-5 col-lg-5 col-xl-5 col-9 text-center">-->
+                                  <!--<input class="col-md-5 col-sm-5 col-lg-5 col-xl-5 col-8" type="text" placeholder="mob no" onkeyup="mobileLocFunction()" name="mobile_no_loc" id="mobile_no_loc" style="text-align:center;border:1px solid #ed2939;display:inline-block;">-->
+                                  <!--<div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3" style="display:inline-block;">-->
+                                    <!--<button id="confirm_submit_loc" type="submit" class="btn btn-primary btn-sm">Confirm</button>-->
+                                  <!--</div>-->
+                                <!--</div>-->
+                                    <!--</div>-->
+                                <!--</form>-->
+
+
+                                <div class="row">
+                                  <div class="col-md-8 col-sm-8 col-lg-7 col-xl-6 d-none d-sm-block">
+                                  </div>
+                                  <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-7">
+                                    <p id='leftlocdisp'></p>
+                                  </div>
+                                  <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-6 text-center">
+                                    <p style="font-weight: 600;display:block;font-size:13px;padding:3px 1px; margin:-12px 0 0 118px;" id='rightdisploc'></p>
+                                  </div>
+                                </div>
+                              </form>
+
+
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+{% else %}
+
+    <br>
+    <h3>You cannot visit other profile wallets!</h3>
+
+{% endif %}
+{% endif %}
+
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+  <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+  <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>-->
+
+  <script src="/static/plugins/bootstrap-datatable/js/jquery.dataTables.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/dataTables.buttons.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/jszip.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/pdfmake.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/vfs_fonts.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/buttons.html5.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/buttons.print.min.js"></script>
+  <script src="/static/plugins/bootstrap-datatable/js/buttons.colVis.min.js"></script>
+
+  <script>
+     $(document).ready(function() {
+      //Default data table
+       $('#default-datatable').DataTable();
+       });
+  </script>
+
+<script type="text/javascript">
+    $(document).on('submit','#cashForm',function(es){
+        es.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'accounts:wallet_view' pk=profile.pk %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                if(returndata.cash){
+                    var xy=document.getElementById('cashcont');
+                    var t_id=returndata.t_id;
+                    var t_amt=returndata.a;
+                    xy.innerHTML="Success! Requested for Cash of "+t_amt+" SGD! Transaction ID: "+t_id;
+                    document.getElementById("submit_cash").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+            },
+            error: function () {
+                console.log("error in ajax form submission");
+            }
+         });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).on('submit','#savingsForm',function(es){
+        es.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'accounts:wallet_view' pk=profile.pk %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                if(returndata.savings){
+                    var xy=document.getElementById('savingscont');
+                    var t_id=returndata.t_id;
+                    var t_amt=returndata.a;
+                    xy.innerHTML="Success! Requested for Savings of "+t_amt+" SGD! Transaction ID: "+t_id;
+                    document.getElementById("submit_save").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+            },
+            error: function () {
+                console.log("error in ajax form submission");
+            }
+         });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).on('submit','#loanForm',function(es){
+        es.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'accounts:wallet_view' pk=profile.pk %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                if(returndata.loan){
+                    var xy=document.getElementById('loancont');
+                    var t_id=returndata.t_id;
+                    var t_amt=returndata.a;
+                    xy.innerHTML="Success! Requested for Loan of "+t_amt+" SGD! Transaction ID: "+t_id;
+                    document.getElementById("submit_loan").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+            },
+            error: function () {
+                console.log("error in ajax form submission");
+            }
+         });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).on('submit','#crowdForm',function(es){
+        es.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'accounts:wallet_view' pk=profile.pk %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                if(returndata.crowd){
+                    var xy=document.getElementById('crowdcont');
+                    var t_id=returndata.t_id;
+                    var t_amt=returndata.a;
+                    xy.innerHTML="Success! Requested for Crowd of "+t_amt+" SGD! Transaction ID: "+t_id;
+                    document.getElementById("submit_crowd").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+            },
+            error: function () {
+                console.log("error in ajax form submission");
+            }
+         });
+    });
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).on('submit','#transferForm',function(es){
+        es.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'accounts:wallet_view' pk=profile.pk %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                if(returndata.success){
+                    var xy=document.getElementById('transfercont');
+                    var j=document.getElementById('leftlocdisp');
+                    console.log(returndata);
+                    var t_id=returndata.t_id;
+                    var rname=returndata.receiver_name;
+                    var t_amt=returndata.a;
+                    xy.innerHTML="Successfully Transferred "+t_amt+" SGD. to "+rname+"! Transaction ID: "+t_id;
+                    j.style="display:none;";
+                    document.getElementById("confirm_submit_loc").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+                else if(returndata.failed){
+                    var xy=document.getElementById('transfercont');
+                    xy.innerHTML="Error! You tried to transfer to your self!";
+                    var j=document.getElementById('leftlocdisp');
+                    j.style="display:none;";
+                    document.getElementById("confirm_submit_loc").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+                else if(returndata.bal_low){
+                    var xy=document.getElementById('transfercont');
+                    xy.innerHTML="Error! You tried to transfer more than your available account balance!";
+                    var j=document.getElementById('leftlocdisp');
+                    j.style="display:none;";
+                    document.getElementById("confirm_submit_loc").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+                else if(returndata.mob_wrong){
+                    var xy=document.getElementById('transfercont');
+                    xy.innerHTML="Error! You cannot transfer to account that does not exist! Please ask your receiver to register to this site and try again.";
+                    var j=document.getElementById('leftlocdisp');
+                    j.style="display:none;";
+                    document.getElementById("confirm_submit_loc").disabled = true;
+                    setTimeout(function() {
+                      relofn();
+                    }, 3000);
+                }
+            },
+            error: function () {
+                console.log("error in ajax form submission");
+            }
+         });
+    });
+</script>
+
+
+
+<!--<script type="text/javascript">-->
+
+
+    <!--function cashFunction(){-->
+        <!--var y = document.getElementById("cash_req_pop");-->
+        <!--y.style.visibility="hidden";-->
+        <!--if (y.style.visibility === "hidden") {-->
+            <!--y.style.visibility = "visible";-->
+        <!--}-->
+      <!--}-->
+      <!--function loanFunction(){-->
+          <!--var y = document.getElementById("loan_req_pop");-->
+          <!--y.style.visibility="hidden";-->
+          <!--if (y.style.visibility === "hidden") {-->
+              <!--y.style.visibility = "visible";-->
+          <!--}-->
+        <!--}-->
+        <!--function savingsFunction(){-->
+            <!--var y = document.getElementById("savings_req_pop");-->
+            <!--y.style.visibility="hidden";-->
+            <!--if (y.style.visibility === "hidden") {-->
+                <!--y.style.visibility = "visible";-->
+            <!--}-->
+          <!--}-->
+    <!--function crowdFunction(){-->
+        <!--var y = document.getElementById("crowd_req_pop");-->
+        <!--y.style.visibility="hidden";-->
+        <!--if (y.style.visibility === "hidden") {-->
+            <!--y.style.visibility = "visible";-->
+        <!--}-->
+      <!--}-->
+    <!--var z=document.getElementById('rightdisploc')-->
+    <!--var za=document.getElementById('rightdisp')-->
+    <!--var errfn1= window.matchMedia("(max-width: 575px)")-->
+    <!--var errfn= window.matchMedia("(min-width: 576px)")-->
+    <!--var errfn2= window.matchMedia("(min-width: 991px)")-->
+    <!--var errfn3= window.matchMedia("(min-width:1200px)")-->
+
+    <!--errorfun(errfn1)-->
+    <!--errorfun(errfn)-->
+    <!--errorfun(errfn2)-->
+    <!--errorfun(errfn3)-->
+
+    <!--errfn1.addListener(errorfun)-->
+    <!--errfn.addListener(errorfun)-->
+    <!--errfn2.addListener(errorfun)-->
+    <!--errfn3.addListener(errorfun)-->
+
+    <!--function errorfun(){-->
+      <!--if(errfn1.matches){-->
+        <!--z.style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin:-32px -324px 0px 245px;";-->
+        <!--za.style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin: 1px 0px 0px -102px;";-->
+      <!--}-->
+      <!--if(errfn.matches){-->
+        <!--z.style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin:-30px -8px 0px -86px;";-->
+      <!--}-->
+      <!--if(errfn2.matches){-->
+        <!--z.style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin:-30px -93px 0px -84px;";-->
+      <!--}-->
+      <!--if(errfn3.matches){-->
+        <!--z.style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin:-31px -106px 0px -16px;";-->
+      <!--}-->
+    <!--}-->
+
+    <!--function mobileFunction() {-->
+        <!--var x = document.getElementById("mobile_no_to");-->
+        <!--var y = document.getElementById("leftdisp");-->
+        <!--var obj_list_one = [{% for x in profiles %}'{{ x.first_name|escapejs }}',{% endfor %}];-->
+        <!--var obj_list_three = [{% for x in profiles %}'{{ x.last_name|escapejs }}',{% endfor %}];-->
+        <!--var obj_list_two = [{% for x in profiles %}'{{ x.mobile_no|escapejs }}',{% endfor %}];-->
+        <!--var obj_list_four = [{% for x in profiles %}'{{x.id|escapejs }}',{% endfor %}];-->
+        <!--var j = x.value.toString();-->
+        <!--var k;-->
+        <!--var l="{{ pk }}";-->
+        <!--l=parseInt(l);-->
+        <!--if (x.value.length===8 | x.value.length===10){-->
+
+          <!--for (i = 0; i < obj_list_two.length; i++) {-->
+              <!--m=parseInt(obj_list_four[i]);-->
+              <!--var medi = window.matchMedia("(max-width: 575px)")-->
+              <!--var medi1 = window.matchMedia("(min-width: 576px)")-->
+              <!--medfun(medi)-->
+              <!--medfun(medi1)-->
+              <!--medi.addListener(medfun)-->
+              <!--medi1.addListener(medfun)-->
+              <!--function medfun(){-->
+                <!--if (medi.matches){-->
+                  <!--y.style="margin:-2px 86px 0px 39px;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;text-align:center;background-color:white;";-->
+                <!--}-->
+                <!--if (medi1.matches){-->
+                  <!--y.style="margin:-44px 14px 0px 0px;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;text-align:center;background-color:white;";-->
+                <!--}-->
+              <!--}-->
+              <!--if(j===obj_list_two[i]){-->
+                  <!--if(m === l){-->
+                      <!--y.innerHTML="Cannot transfer to yourself!";-->
+                      <!--break;-->
+                    <!--}-->
+                  <!--else{-->
+                    <!--k=obj_list_four[i];-->
+                    <!--y.innerHTML="<a href='"+"{% url 'accounts:profile_detail' pk=12345 %}".replace(/12345/,k.toString())+"'>"+obj_list_one[i]+" "+obj_list_three[i]+"</a>";-->
+                    <!--break;-->
+                  <!--}-->
+              <!--}-->
+                  <!--y.innerHTML= "Contact not present. Refresh & Retry.";-->
+            <!--}-->
+      <!--}-->
+    <!--}-->
+
+    <!--function mobileLocFunction() {-->
+        <!--var x = document.getElementById("mobile_no_loc");-->
+        <!--var y = document.getElementById("leftlocdisp");-->
+        <!--var obj_list_one = [{% for x in profiles %}'{{ x.first_name|escapejs }}',{% endfor %}];-->
+        <!--var obj_list_three = [{% for x in profiles %}'{{ x.last_name|escapejs }}',{% endfor %}];-->
+        <!--var obj_list_two = [{% for x in profiles %}'{{ x.mobile_no|escapejs }}',{% endfor %}];-->
+        <!--var obj_list_four = [{% for x in profiles %}'{{x.id|escapejs }}',{% endfor %}];-->
+
+        <!--var j = x.value.toString();-->
+        <!--var k;-->
+
+
+        <!--var l="{{ pk }}";-->
+        <!--l=parseInt(l);-->
+
+        <!--if (x.value.length===8 | x.value.length===10){-->
+          <!--for (i = 0; i < obj_list_two.length; i++) {-->
+            <!--m=parseInt(obj_list_four[i]);-->
+
+            <!--var mee0 = window.matchMedia("max-width:430px)")-->
+            <!--var mee1 = window.matchMedia("(min-width:460px)")-->
+            <!--var me0 = window.matchMedia("(min-width:500px)")-->
+            <!--var me1 = window.matchMedia("(min-width: 575px)")-->
+            <!--var me2 = window.matchMedia("(min-width: 576px)")-->
+
+            <!--var me7 = window.matchMedia("(min-width: 674px)")-->
+            <!--var me6 = window.matchMedia("(min-width: 790px)")-->
+            <!--var me5 = window.matchMedia("(min-width: 900px)")-->
+
+            <!--var me3 = window.matchMedia("(min-width: 992px)")-->
+            <!--var me4 = window.matchMedia("(min-width: 1199px)")-->
+            <!--var me8 = window.matchMedia("(min-width: 1300px)")-->
+            <!--var me9 = window.matchMedia("(min-width: 1460px)")-->
+            <!--var me10 = window.matchMedia("(min-width: 1766px)")-->
+
+
+            <!--// var me3 = window.matchMedia("(min-width: 992px) and (max-width:1198)")-->
+
+            <!--mymedfunc(mee0) // Call listener function at run time-->
+            <!--mymedfunc(mee1) // Call listener function at run time-->
+            <!--mymedfunc(me0) // Call listener function at run time-->
+            <!--mymedfunc(me1) // Call listener function at run time-->
+            <!--mymedfunc(me2)-->
+            <!--mymedfunc(me3)-->
+            <!--mymedfunc(me4)-->
+            <!--mymedfunc(me5)-->
+            <!--mymedfunc(me6)-->
+            <!--mymedfunc(me7)-->
+            <!--mymedfunc(me8)-->
+            <!--mymedfunc(me9)-->
+            <!--mymedfunc(me10)-->
+
+            <!--mee0.addListener(mymedfunc)-->
+            <!--mee1.addListener(mymedfunc)-->
+            <!--me0.addListener(mymedfunc)-->
+            <!--me1.addListener(mymedfunc) // Attach listener function on state changes-->
+            <!--me2.addListener(mymedfunc)-->
+            <!--me3.addListener(mymedfunc)-->
+            <!--me4.addListener(mymedfunc)-->
+            <!--me5.addListener(mymedfunc)-->
+            <!--me6.addListener(mymedfunc)-->
+            <!--me7.addListener(mymedfunc)-->
+            <!--me8.addListener(mymedfunc)-->
+            <!--me9.addListener(mymedfunc)-->
+            <!--me10.addListener(mymedfunc)-->
+
+
+
+            <!--function mymedfunc() {-->
+
+                <!--if (mee0.matches) { // If media query matches-->
+                  <!--y.style="margin:-87px -174px 0px 295px;border-right:1px solid gray;border-top:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;text-align:center;";-->
+                <!--}-->
+                <!--if (mee1.matches) {-->
+                  <!--y.style="margin:-78px -191px 0px 316px;border-right:1px solid gray;border-top:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;text-align:center;";-->
+                <!--}-->
+                <!--if (me0.matches) {-->
+                  <!--y.style="margin:-71px -203px 0px 321px;border-right:1px solid gray;border-top:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;text-align:center;";-->
+                <!--}-->
+                <!--if (me1.matches) {-->
+                  <!--y.style="margin:-68px -230px 0px 364px;border-right:1px solid gray;border-top:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;text-align:center;";-->
+                <!--}-->
+                <!--if (me2.matches) {-->
+                  <!--y.style="margin:-71px -91px 0px 2px; text-align:center;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+
+                <!--if (me7.matches){-->
+                  <!--y.style="margin:-70px -91px 0px 1px; text-align:center;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+
+                <!--if (me6.matches){-->
+                  <!--y.style="margin:-68px -91px 0px 1px; text-align:center; border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+                <!--if (me5.matches){-->
+                  <!--y.style="margin:-70px -91px 0px 2px; text-align:center;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+
+                <!--if (me3.matches) { // If query matches-->
+                  <!--y.style="margin:-77px -132px 0px 43px;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;text-align:center;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+
+                <!--if (me4.matches) { // If media query matches-->
+                  <!--y.style="margin:-78px -173px 0px 85px;text-align:center;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+
+                <!--if (me8.matches) { // If media query matches-->
+                  <!--y.style="margin:-65px -172px 0px 87px;border-top: 1px solid gray;text-align:center;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+                <!--if (me9.matches) { // If media query matches-->
+                  <!--y.style="margin:-72px -168px 0px 90px;text-align:center;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+                <!--if (me10.matches) { // If media query matches-->
+                  <!--y.style="margin:-72px -171px 0px 85px;text-align:center;border-top:1px solid gray;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+                <!--}-->
+            <!--}-->
+
+            <!--// y.style="margin:-9px 15px;border-right:1px solid gray;border-left:1px solid gray;border-bottom:1px solid gray;font-weight: 700;font-size:12px;padding:3px 1px;background-color:white;";-->
+            <!--if(j===obj_list_two[i]){-->
+                <!--if(m === l){-->
+                    <!--y.innerHTML="Cannot transfer to yourself!";-->
+                    <!--break;-->
+                  <!--}-->
+                <!--else{-->
+                    <!--k=obj_list_four[i];-->
+                    <!--y.innerHTML="<a href='"+"{% url 'accounts:profile_detail' pk=12345 %}".replace(/12345/,k.toString())+"'>"+obj_list_one[i]+" "+obj_list_three[i]+"</a>";-->
+                    <!--break;-->
+                  <!--}-->
+            <!--}-->
+            <!--y.innerHTML= "Contact not present. Refresh & Retry."-->
+          <!--}-->
+        <!--}-->
+    <!--}-->
+
+<!--</script>-->
+
+<script type="text/javascript">
+function relofn() {
+    window.location.reload(true);
+}
+</script>
+
+{% endif %}
+
+{% endblock %}

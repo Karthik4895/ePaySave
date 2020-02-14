@@ -1,0 +1,318 @@
+{% extends 'accounts/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+<title>ePaySave Wallet Transactions</title>
+{% endblock %}
+
+
+{% block head %}
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">-->
+  <!--$(document).ready(function(){-->
+      <!--$("#sortdiv").click(function(){-->
+          <!--$("#table_normal,reverse_table").toggle();-->
+      <!--});-->
+  <!--});-->
+<!--</script>-->
+
+
+{% endblock %}
+
+
+{% block wallet %}
+
+<div class="pt-2" style="margin:3px 0;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px;">Balance :{% block wallet_cash %}
+    {{wallet.wallet_bal}} SGD.
+    {% endblock %}
+  </p>
+  </a>
+  <a class="nav-item nav-link navbar-light"style="color:rgb(255,255,255);font-size:13px;margin:5px 0;line-height:0.5px;" href="{% url 'accounts:history_transac' pk=profile.pk %}">Wallet Transactions</a>
+</div>
+
+
+<a class="nav-item pt-3 nav-link navbar-light" style="color:rgb(255,255,255);" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+<img src="{% static 'wallet-icon.png' %}" height=28 width=24 class="pb-1 d-inline-block alighn-top" />
+</a>
+
+<div class="pt-2" style="margin-top:3px;">
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Cash :{% block cash %}
+    {{wallet.cash_balance}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Savings :{% block savings %}
+    {{wallet.savings}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Loan amt :{% block loan %}
+    {{wallet.loan_amt}} SGD.
+    {% endblock %}
+</p>
+  </a>
+
+
+</div>
+
+<div class="pt-2 pl-2" style="margin-top:3px;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Recycle : {% block recycle %}
+    {{wallet.recycle_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Incentive : {% block incentive %}
+    {{wallet.incentive_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Crowd fund: {% block crowd %}
+    {{wallet.crowd_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+
+
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+{% if pk == profile.pk %}
+<br>
+<h4 class='text-center pb-3'>Wallet Log : {{ profile.first_name }} {{ profile.last_name }}</h4>
+
+
+<div class="text-center" id="reverse_table">
+  <div class="bgwht">
+  <table class="table table-hover table-bordered headsp" id="table_cs" style="transform:scale(0.98,1.0);">
+    <thead></thead>
+      <tr class='row rowhead'>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Date</th>
+        <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">Balance</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Transaction ID</th>
+
+        <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6" style="position:relative">Time</th>
+        <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">Sent by</th>
+        <th class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">Amount</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Received by</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Status</th>
+      </tr>
+      {% for tran in transac_rev %}
+        {% if tran.sender.first_name == profile.first_name %}
+
+            {% if tran.receiver.first_name == "Admin" %}
+                <tr class="row rowsp">
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.wallet_balance_sent }}</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">You</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Admin</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">
+                    {% if tran.message == 'Purchased Grocery Items' %}
+                    <button class="btn rowbtnclr btn-block" id='butto' onclick="purchasefn('{{ tran.transaction_id }}','{{ profile.pk }}')" data-toggle="modal" data-target="#defaultsizemodal" >
+                      {{ tran.message }}
+                    </button>
+                    {% elif tran.message == 'Purchased Merchant Tickets' %}
+                    <button class="btn rowbtnclr btn-block" id='butto1' onclick="merchfn('{{ tran.transaction_id }}','{{ profile.pk }}')" data-toggle="modal" data-target="#defaultsizemodal2" >
+                        {{ tran.message }}
+                    </button>
+                    {% else %}
+                        {{ tran.message }}
+                    {% endif %}
+                  </td>
+                </tr>
+              <div class="modal fade pt-3 pb-3" id="defaultsizemodal" role="dialog">
+                <div class="wdth modal-dialog">
+                  <div class="modal-content">
+                    <div class="">
+                      <button type="button" class="close padx" data-dismiss="modal">&times;</button>
+                      <h3 class="headingstl text-center pt-3 pb-3" style="border-bottom:2px solid gray">Purchased Grocery Items</h3>
+                    </div>
+                    <div class="modal-body" id="defmodal">
+                      <div class="text-center pb-5 pt-5">
+                            <img src="/static/loader.gif" height="100" style="width:200px;" class="mg logo-icon" alt="Loading..">
+                              <br>
+                            <b>...Loading...</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+              <div class="modal fade pt-3 pb-3" id="defaultsizemodal2" role="dialog">
+                <div class="wdth modal-dialog" style="width:52%!important;">
+                  <div class="modal-content">
+                    <div class="">
+                      <button type="button" class="close padx" data-dismiss="modal">&times;</button>
+                      <h3 class="headingstl text-center pt-3 pb-3" style="border-bottom:2px solid gray">Purchased Merchant Tickets</h3>
+                    </div>
+                    <div class="modal-body" id="defmodal1">
+                      <div class="text-center pb-5 pt-5">
+                            <img src="/static/loader.gif" height="100" style="width:200px;" class="mg logo-icon" alt="Loading..">
+                              <br>
+                            <b>...Loading...</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+
+
+
+            {% elif tran.receiver.first_name != "Admin" %}
+            <tr class="row rowsp">
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+              <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.wallet_balance_sent }}</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+              <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+              <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">You</td>
+              <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.receiver.first_name}} {{ tran.receiver.last_name }}</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+            </tr>
+          {% endif %}
+        {% elif tran.receiver.first_name == profile.first_name %}
+              {% if tran.sender.first_name == "Admin" %}
+                  <tr class="row rowsp">
+                    <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                    <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.wallet_balance_rec }}</td>
+                    <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                    <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                    <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">Admin</td>
+                    <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                    <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+                    <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+                  </tr>
+              {% elif tran.sender.first_name != "Admin" %}
+                <tr class="row rowsp">
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.wallet_balance_rec }}</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_id }}</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.date_of_transaction|date:"H:i"}} SGT</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.sender.first_name}} {{ tran.sender.last_name }}</td>
+                  <td style="font-weight:500;" class="col-md-1 col-xl-1 col-lg-1 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+                  <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+                </tr>
+              {% endif %}
+        {% endif %}
+
+      {% endfor %}
+    <tfoot></tfoot>
+
+  </table>
+  </div>
+</div>
+<br><br>
+
+
+<!-- <div class="text-center container-fluid" id="table_normal">
+  <table class="table table-hover table-bordered">
+      <tr class='row'>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Date</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6" style="position:relative">Time
+        <button id="sortdiv" style="background-color:#c5c5c5;padding:0px 0px; text-align:center;">
+          <img src="{% static 'iconsort.png' %}" height=25 width=17 style="background-color:#c5c5c5;text-align:center;position:absolute; margin:-16px 7px;">
+        </button></th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Sent by</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Amount</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Received by</th>
+        <th class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Status</th>
+      </tr>
+      {% for tran in transac %}
+        {% if tran.sender.first_name == profile.first_name %}
+          <tr class="row rowsp">
+            <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+            <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"g:i a"}} SGT</td>
+            <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+            <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+            <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.receiver.first_name}} {{ tran.receiver.last_name }}</td>
+            <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Transferred</td>
+          </tr>
+        {% elif tran.receiver.first_name == profile.first_name %}
+          {% if tran.sender.first_name == "admin" %}
+            <tr class="row rowsp">
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"g:i a"}} SGT</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Admin</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.message }}</td>
+            </tr>
+          {% elif tran.sender.first_name != "admin" %}
+            <tr class="row rowsp">
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"jS M Y"}}</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.date_of_transaction|date:"g:i a"}} SGT</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.sender.first_name}} {{ tran.sender.last_name }}</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">{{ tran.transaction_amount }} </td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">You</td>
+              <td style="font-weight:500;" class="col-md-2 col-xl-2 col-lg-2 col-6 col-sm-6">Transferred</td>
+            </tr>
+          {% endif %}
+        {% endif %}
+
+        {% endfor %}
+  </table>
+</div> -->
+
+
+<br><br>
+{% else %}
+<br>
+<h3>You cannot view other profile's wallet log!</h3>
+{% endif %}
+
+
+<!-- <script type="text/javascript">
+
+var x= document.getElementById('table_cs')
+var m= window.matchMedia("(max-width:767px)")
+medfn(m)
+m.addListener(medfn)
+function medfn(){
+  if(m.matches){
+    x.style="transform:scale(1.0,1.0)"
+  }
+}
+
+</script> -->
+
+
+
+<!-- <script type="text/javascript">
+ var sort_order=False
+  function sorttime(){
+      sort_order=!sort_order
+      if (sort_order===True){
+      document.getElementById("reverse_table").style.visibility = "hidden";
+      document.getElementById("table_normal").style.visibility = "visible";
+    }
+    else{
+      document.getElementById("reverse_table").style.visibility = "visible";
+      document.getElementById("table_normal").style.visibility = "hidden";
+    }
+  }
+</script>
+ -->
+
+
+
+
+{% endblock %}

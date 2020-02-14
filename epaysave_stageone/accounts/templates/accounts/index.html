@@ -1,0 +1,353 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+
+{% block wallet %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+
+        <section id="breakingNews" style="display: block;">
+            <ul class="bnews flt">
+                {% for n in news_portal %}
+                <li style="display: none;" class="" id="news_portal_{{ forloop.counter }}">
+                    <h2 class="head flt"><span>NEWS JUST IN</span></h2>
+                    <a href="{% url 'accounts:newsdesc' slug=n.news_title_slug %}" target="_blank" >
+                        <b style="color:#007EA4">{{ n.news_title }}</b>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="nextPrev" style="display: block;">
+                <a class="flt prev topSprite" onclick="prevfn()"></a>
+                <a class="flr next topSprite" onclick="nextfn()"></a>
+            </div>
+        </section>
+
+  <div class="text-center pt-4 pb-4">
+     <img src="{% static 'logo_red.jpg' %}" alt="ePaySave" height="120" width="250">
+  </div>
+
+
+<p class="pt-4 pl-3 pr-3 pb-3" style="background-color:#fff;">
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+  <div class="row" style="margin-left:2px;">
+        <div class="col-8  bg-body item-mb" style="padding:28px;">
+            <div class="row">
+                <div class="col-6">
+                        <div class="text-center">
+                                <h5 class="title-medium-dark mb-none">
+                                    <a href="{% url 'accounts:newsdesc'  %}">{{ news_first.news_title }}</a>
+                                </h5>
+                                <p>{{ news_first.description|truncatechars:300 }}</p>
+                        </div>
+                        <!--<div style="float:right;">{{ news_first.news_date }}</div>-->
+                            <!--<br>-->
+                        <div style="float:right;" class="pb-3">-reported by Chandru{{ news_first.news_editor }}</div>
+
+                </div>
+                <div class="col-6" style="padding-top:10px">
+                        {% if news_first.newspic %}
+                                  <img src="{{ news_first.newspic.url }}" height="300" width="400" class='img-fluid profimg' alt="Cannot be found!">
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+      <div class="col-4">
+          <ul class="ulnews">
+        {% for n in news_little %}
+              <li>
+            <div class="text-center" style="margin-bottom:10px;">
+                <div class="bg-body text-center row" style="padding:7px;">
+                    <div class="col-4">
+                    {% if n.newspic %}
+                              <img src="{{ n.newspic.url }}" height="85" width="140" class='img-fluid profimg' alt="Cannot be found!">
+                    {% endif %}
+                    </div>
+                    <div class="col-8">
+                        <h6 class="title-medium-dark mb-none">
+                            <a href="{% url 'accounts:newsdesc' slug=n.news_title_slug %}">{{ n.news_title|truncatechars:25 }}</a>
+                        </h6>
+                        <div>{{ n.description|truncatechars:20 }}</div>
+                    </div>
+                </div>
+            </div>
+          </li>
+        {% endfor %}
+
+          </ul>
+
+      </div>
+  </div>
+
+    <!--<div class="row">-->
+        <!--{% for n in news_little %}-->
+            <!--<div class="col-lg-3 col-md-3 col-sm-6 col-12 item-mb text-center">-->
+                <!--<div class="service-box2 bg-body text-center">-->
+                <!--{% if n.newspic %}-->
+                          <!--<img src="{{ n.newspic.url }}" height="85" width="140" class='img-fluid profimg' alt="Cannot be found!">-->
+                <!--{% endif %}-->
+                        <!--<h5 class="title-medium-dark mb-none">-->
+                            <!--<a href="{% url 'accounts:newsdesc' slug=n.news_title_slug %}">{{ n.news_title }}</a>-->
+                        <!--</h5>-->
+                        <!--<p>{{ n.news_date }}</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--{% endfor %}-->
+    <!--</div>-->
+
+<div class='row' style="float:right;" >
+        <a href="{% url 'accounts:news_all' %}" class="div-a">view more news....</a>
+</div>
+        <div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Purchase Grocery Items</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Groceries</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h4 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h4>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+    function bodyloadfn(){
+        var xy=document.getElementById('news_portal_3');
+        xy.style='display:block;';
+    }
+
+</script>
+
+<script type="text/javascript">
+   function prevfn(){
+        var na='';
+        var x=0;
+        var y=0;
+        var nlen=0;
+        var ni='';
+        var bool=0;
+        {% for n in news_portal %}
+            if(bool==0){
+                nlen=0;
+                {% for na in news_portal %}
+                    nlen=nlen+1;
+                {% endfor %}
+                na='{{ n.id }}';
+                x=document.getElementById('news_portal_'+na);
+                if (x.style.display=='block'){
+                    x.style="display:none;";
+                    na=parseInt(na)-parseInt(1);
+                    if (parseInt(na)==0){
+                        ni=nlen.toString();
+                    }
+                    else{
+                        ni=na.toString();
+                    }
+                    y=document.getElementById('news_portal_'+ni);
+                    y.style='display:block;';
+                    bool=1;
+                }
+            }
+        {% endfor %}
+   }
+</script>
+
+<script type="text/javascript">
+   function nextfn(){
+        var na='';
+        var x=0;
+        var y=0;
+        var nlen=0;
+        var ni='';
+        var bool=0;
+        {% for n in news_portal %}
+            if(bool==0){
+                nlen=0;
+                {% for na in news_portal %}
+                    nlen=nlen+1;
+                {% endfor %}
+                na='{{ n.id }}';
+                x=document.getElementById('news_portal_'+na);
+                if (x.style.display=='block'){
+                    x.style="display:none;";
+                    na=parseInt(na)+1;
+                    if (parseInt(na)>nlen){
+                        ni='1';
+                    }
+                    else{
+                        ni=na.toString();
+                    }
+                    y=document.getElementById('news_portal_'+ni);
+                    y.style='display:block;';
+                    bool=1;
+                }
+            }
+        {% endfor %}
+   }
+</script>
+
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+   bodyloadfn();
+    setInterval(function() {
+      prevfn();
+    }, 3000);
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  //Set the carousel options
+  $('#quote-carousel').carousel({
+    pause: true,
+    interval: 4000,
+  });
+});
+</script>
+
+{% endblock %}
+

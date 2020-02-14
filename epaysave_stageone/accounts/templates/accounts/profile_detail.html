@@ -1,0 +1,261 @@
+{% extends 'accounts/base.html' %}
+
+{% load staticfiles %}
+
+
+
+
+{% block title %}
+<title>Profile | {{ profile.first_name }} {{ profile.last_name }}</title>
+{% endblock %}
+
+{% block usernam %}
+<a class="nav-item nav-link" style="color:rgb(255,255,255); padding-right:10px;">{{user_accnt.username|slice:"5" }}{% if user_accnt.username|length > 5 %}****{% endif %}</a>
+{% endblock %}
+
+{% block profile %}
+<a class="wallet nav-item nav-link" style="color:rgb(255,255,255);margin-top:12px; padding-right:10px;">
+  <p style="line-height:0.5px;">Last Login</p>
+  <p style="line-height:0.5px;">{{user_accnt.last_login|date:"D, d M, Y"}}</p>
+  <p style="line-height:0.5px;">{{user_accnt.last_login|date:"h : i a "}}(SGT)</p>
+</a>
+<div class="navbar-nav">
+  <a class="nav-item nav-link active pl-5" href="{% url 'accounts:profile_detail' pk=profile.pk %}">Profile</a>
+</div>
+{% endblock %}
+
+
+
+{% block wallet %}
+{% if pk == profile.pk %}
+
+<div class="pt-2" style="margin:3px 0;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px;">Balance :{% block wallet_cash %}
+    {{wallet.wallet_bal}} SGD.
+    {% endblock %}
+  </p>
+  </a>
+  <a class="nav-item nav-link navbar-light"style="color:rgb(255,255,255);font-size:13px;margin:5px 0;line-height:0.5px;" href="{% url 'accounts:history_transac' pk=profile.pk %}">Wallet Transactions</a>
+</div>
+
+
+<a class="nav-item pt-3 nav-link navbar-light" style="color:rgb(255,255,255);" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+<img src="{% static 'wallet-icon.png' %}" height=28 width=24 class="pb-1 d-inline-block alighn-top" />
+</a>
+
+<div class="pt-2" style="margin-top:3px;">
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Cash :{% block cash %}
+    {{wallet.cash_balance}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Savings :{% block savings %}
+    {{wallet.savings}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Loan amt :{% block loan %}
+    {{wallet.loan_amt}} SGD.
+    {% endblock %}
+</p>
+  </a>
+
+
+</div>
+
+<div class="pt-2 pl-2" style="margin-top:3px;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Recycle : {% block recycle %}
+    {{wallet.recycle_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Incentive : {% block incentive %}
+    {{wallet.incentive_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Crowd fund: {% block crowd %}
+    {{wallet.crowd_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+
+
+</div>
+
+{% endif %}
+{% endblock %}
+
+        {% block transfer %}
+           <!--<button type="button" name="transfer_cash" id="transfer_cash" class="tranbtn btn btn-sm" data-toggle="modal" data-target="#transferModal">Transfer Cash</button>-->
+        {% endblock %}
+
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+    <br>
+    <div class="container">
+      <div class="gradient-wrapper">
+        <div class="gradient-padding">
+      <h3 class='text-center'>{{ profile.first_name }} {{ profile.last_name }} </h3>
+      <br>
+      <div class="row">
+          <!-- <div class="col-md-12"> -->
+            <div class="col-md-5 col-sm-10 col-lg-5 col-10 col-xl-5">
+              <table class="table borderless">
+                <tr class="row">
+                  <th class='col-md-4 col-sm-4 col-lg-4 col-4 col-xl-4'>Email Id: </th>
+                  <td class='col-md-8 col-sm-8 col-lg-8 col-8 col-xl-8' style="font-weight:450;color:black;">{{ profile.email|slice:"4" }}{% if profile.email|length > 4 %}*******{% endif %}</td>
+                </tr>
+                <tr class="row">
+                  <th class='col-md-4 col-sm-4 col-lg-4 col-4 col-xl-4'>Mobile No.: </th>
+                  <td class='col-md-8 col-sm-8 col-lg-8 col-8 col-xl-8' style="font-weight:450;color:black;">{{ profile.mobile_no|slice:"4" }}{% if profile.mobile_no|length > 4 %}*******{% endif %}</td>
+                </tr>
+                <tr class="row">
+                  <th class="col-md-4 col-sm-4 col-lg-4 col-4 col-xl-4">Address: </th>
+                  <td class='col-md-8 col-sm-8 col-lg-8 col-8 col-xl-8' style="font-weight:450;color:black;">{{ profile.address_line_1|slice:"4" }}{% if profile.address_line_1|length > 4 %}*******{% endif %}<br>
+                  {{ profile.address_line_2|slice:"4" }}{% if profile.address_line_2|length > 4 %}*******{% endif %}<br> Pincode : {{ profile.postal_code|slice:"3" }}{% if profile.postal_code|length > 3 %}*******{% endif %}</td>
+                </tr>
+                <tr class="row">
+                  <th class="col-md-4 col-sm-4 col-lg-4 col-4 col-xl-4">City: </th>
+                  <td class='col-md-8 col-sm-8 col-lg-8 col-8 col-xl-8' style="font-weight:450;color:black;">{{ profile.city|slice:"4" }}{% if profile.city|length > 4 %}*******{% endif %}</td>
+                </tr>
+                <tr class="row">
+                  <th class="col-md-4 col-sm-4 col-lg-4 col-4 col-xl-4">Country: </th>
+                  <td class="col-md-8 col-sm-8 col-lg-8 col-8 col-xl-8" style="font-weight:450;color:black;">{{ profile.country|slice:"2" }}{% if profile.country|length > 2 %}*******{% endif %}</td>
+                </tr>
+                <tr class="row">
+                  <th class="col-md-4 col-sm-4 col-lg-4 col-4 col-xl-4">IC: </th>
+                  <td class="col-md-8 col-sm-8 col-lg-8 col-8 col-xl-8" style="font-weight:450;color:black;">{{ profile.ic|slice:"3" }}{% if profile.ic|length > 3 %}*******{% endif %}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-4">
+              <!-- <div class="col-md-5"> -->
+                {% if profile.image %}
+                  <img src="{{ profile.image.url }}" style="height:270px;" class='img-fluid profimg' alt="Cannot be found!">
+                {% endif %}
+              <!-- </div> -->
+            </div>
+            <div class="col-md-3 col-sm-4 col-lg-3 col-4 col-xl-3" style="position:relative;">
+              <a class="btn btn-danger btn-sm" style="position:absolute;margin:30% 0;" href="{% url 'accounts:profile_edit' pk=profile.pk %}">Edit Profile<span class="glyphicon glyphicon-pencil"></span></a>
+            </div>
+
+          <!-- </div> -->
+      </div>
+        </div>
+      </div>
+    </div>
+      <!-- <p></p>
+      <p>Mobile Number: </p>
+      <p>Address: {{ profile.address }}</p>
+      <p>City: {{ profile.city }}</p>
+      <p>Type: {{ profile.type }}</p> -->
+      <!-- {% if profile.image %}
+        <img src="{{ profile.image.url }}" height=300 width=300 class='img-fluid' alt="Cannot be found!">
+      {% endif %}
+      <a class="btn btn-primary" href="{% url 'accounts:profile_edit' pk=profile.pk %}">Edit Profile<span class="glyphicon glyphicon-pencil"></span></a> -->
+
+    {% endif %}
+
+
+                      <div class="modal fade" id="transferModal" role="dialog">
+                        <div class="modal-dialog" style="padding-top:150px;">
+                          <div class="modal-content">
+                            <div class="">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="text-center pt-3 pb-3">Transfer Cash Local</h4>
+                            </div>
+                            <div class="modal-body">
+
+
+                              <!--<div class="row">-->
+                                <!--<div class="col-md-8 col-sm-8 col-lg-8 col-xl-8 col-8">-->
+                                <!--</div>-->
+                                <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-8">-->
+                                  <!--<p id='leftdisp'></p>-->
+                                <!--</div>-->
+                                <!--<div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-2">-->
+                                  <!--<p style="font-weight: 600;display:block;font-size:14px;padding:3px 1px; margin:-38px 0px 0px -8px;" id='rightdisp'></p>-->
+                                <!--</div>-->
+                              <!--</div>-->
+
+                                <div id="disp" name="disp" style="font-weight:600;"></div>
+                                <div id="displa" name="displa" style="font-weight:600;"></div>
+
+                              <form method="POST">
+                                  {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="cash_req" style="font-weight:500;">Amount:</label>
+                                    </div>
+                                    <div class="col-8">
+                                      <!--<textarea id="cash_req" name="cash_req" rows="1" cols="10"  class="col-sm-9 col-lg-9 col-md-9 col-9" style="text-align:center; width:160px;"></textarea>-->
+                                        <input class="col-sm-9 col-lg-9 col-md-9 col-9" onkeyup="checkInput(this)" type="number" id="amount_loc" name="amount_loc" placeholder="Amount" style="width:160px;text-align: center;border:1px solid #ed2939;" /><span class="moneyspan">SGD</span>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-8">
+                                  <div class="col-md-4 col-sm-4 col-lg-4 col-xl-4 col-4 text-center" style="positon:relative;">
+                                    <input type="button" onclick="checkloc()" name="checkbtn" value="Check" style="position:absolute;border:1px solid black;" />
+                                    <strong id="tickmark" style="margin-left:65px;position:absolute;"></strong>
+                                  </div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="cash_req" style="font-weight:500;">Transfer To:</label>
+                                    </div>
+                                    <div class="col-8">
+                                      <input class="col-md-11 col-sm-11 col-lg-11 col-xl-11 col-11" type="text" placeholder="mob no" onkeyup="mobileLocFunction()" name="mobile_no_loc" id="mobile_no_loc" style="width:160px;text-align:center;border:1px solid #ed2939;display:inline-block;">
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                      <div class="col-4">
+                                      </div>
+                                      <div class="col-4 text-center" style="margin-left: 13px;">
+                                        <button id="confirm_submit_loc" type="submit" class="btn btn-danger btn-sm">Confirm</button>
+                                      </div></div>
+                              </form>
+
+                                <div class="row">
+                                  <div class="col-md-8 col-sm-8 col-lg-7 col-xl-6 d-none d-sm-block">
+                                  </div>
+                                  <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-7">
+                                    <p id='leftlocdisp'></p>
+                                  </div>
+                                  <div class="col-md-2 col-sm-2 col-lg-2 col-xl-2 col-6 text-center">
+                                    <p style="font-weight: 600;display:block;font-size:13px;padding:3px 1px; margin:-12px 0 0 118px;" id='rightdisploc'></p>
+                                  </div>
+                                </div>
+
+
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+
+{% endblock %}
+
+
