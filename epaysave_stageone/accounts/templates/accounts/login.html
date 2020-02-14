@@ -1,0 +1,568 @@
+{% extends 'accounts/base.html' %}
+
+<!--{% block login %}-->
+  <!--<a class="nav-item nav-link pr-3" style="color:rgb(255,255,255);margin:5px 0;font-size:15px;" href="{% url 'accounts:user_login' %}">Login</a>-->
+<!--{% endblock %}-->
+
+{% load staticfiles %}
+{% block content %}
+
+{% if error %}
+{{ error }}
+  <br />
+  <br />
+{% endif %}
+
+{% if inactive %}
+
+  <div class="text-center pt-4 pb-4">
+     <img src="{% static 'logo_red.jpg' %}" alt="ePaySave" height="120" width="250">
+  </div>
+
+<p>
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+
+  <div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Purchase Grocery Items</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Groceries</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+
+{% elif user %}
+
+  <div class="text-center pt-4 pb-4">
+     <img src="{% static 'logo_red.jpg' %}" alt="ePaySave" height="120" width="250">
+  </div>
+
+<p class="pt-4">
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+
+  <div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Purchase Grocery Items</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Groceries</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+{% block usernamepwd %}
+          <span class="invalidlogin">Invalid Login! Retry or Register!</span>
+{% endblock %}
+
+{% else %}
+  <div class="row" style="display:none;">
+  <div class="col-5 text-center">
+    <h4 class='pt-3'>Login to site :</h4>
+  </div>
+  </div>
+  <div class="text-center pt-4 pb-4">
+     <img src="{% static 'logo_red.jpg' %}" alt="ePaySave" height="120" width="250">
+  </div>
+
+<p>
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+
+  <div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Purchase Grocery Items</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Groceries</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+
+  <!--<form method="POST" action="{% url 'accounts:user_login' %}">-->
+<!--{% csrf_token %}-->
+<!--<br>-->
+  <!--<div class="col-sm-6" style="display:none;">-->
+    <!--<table class='table borderless'>-->
+      <!--<tr>-->
+        <!--<td><strong>Username: </strong> </td>-->
+        <!--<td><input type="password" name="username" placeholder="user_name" style="text-align: center"/> </td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td><strong>Password: </strong> </td>-->
+        <!--<td>-->
+            <!--<input id="password-field" type="password" name="password" placeholder="password" style="text-align: center"/>-->
+            <!--<span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>-->
+        <!--</td>-->
+      <!--</tr>-->
+    <!--</table>-->
+  <!--</div>-->
+<!--<p class='row' style="display:none;">-->
+  <!--<div class="col-6 pl-5 text-center" style="display:none;">-->
+    <!--<input class="btn btn-primary btn-md" type="submit" value="Login" />-->
+  <!--</div>-->
+<!--</p>-->
+<!--</form>-->
+
+{% endif %}
+
+<script type="text/javascript">
+$(".toggle-password").click(function() {
+  $(this).toggleClass("fa-eye-slash fa-eye");
+  var input = $($(this).attr("toggle"));
+  if (input.attr("type") == "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+});
+</script>
+{% endblock %}

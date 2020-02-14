@@ -1,0 +1,744 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+{% load get_by_index %}
+{% load get_by_key %}
+
+  {% block title %}
+      <title>Purchase Tickets</title>
+  {% endblock %}
+
+{% block wallet %}
+
+<div class="pt-2" style="margin:3px 0;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px;">Balance :{% block wallet_cash %}
+    {{wallet.wallet_bal}} SGD.
+    {% endblock %}
+  </p>
+  </a>
+  <a class="nav-item nav-link navbar-light"style="color:rgb(255,255,255);font-size:13px;margin:5px 0;line-height:0.5px;" href="{% url 'accounts:history_transac' pk=profile.pk %}">Wallet Transactions</a>
+</div>
+
+
+<a class="nav-item pt-3 nav-link navbar-light" style="color:rgb(255,255,255);" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+<img src="{% static 'wallet-icon.png' %}" height=28 width=24 class="pb-1 d-inline-block alighn-top" />
+</a>
+
+<div class="pt-2" style="margin-top:3px;">
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Cash :{% block cash %}
+    {{wallet.cash_balance}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Savings :{% block savings %}
+    {{wallet.savings}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Loan amt :{% block loan %}
+    {{wallet.loan_amt}} SGD.
+    {% endblock %}
+</p>
+  </a>
+
+
+</div>
+
+<div class="pt-2 pl-2" style="margin-top:3px;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Recycle : {% block recycle %}
+    {{wallet.recycle_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Incentive : {% block incentive %}
+    {{wallet.incentive_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Crowd fund: {% block crowd %}
+    {{wallet.crowd_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+
+</div>
+
+{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+<script type="text/javascript">
+    function checkaduchi(){
+    var ac;
+    var ca;
+    var cou;
+    {% for merchantcode in merchant %}
+        document.getElementById('buy_id_{{ forloop.counter0 }}').disabled = false;
+    {% endfor %}
+
+    {% for merchantcode in merchant %}
+        ac=0;
+        ca=0;
+        cou=0;
+        {% for merchitem in merchantitems %}
+            {% if merchitem.merchant_code == merchantcode %}
+                cou=cou+1;
+                {% if merchitem.adult_child == 'A' %}
+                    {% for merchitemb in merchantitems %}
+                        {% if merchitemb.merchant_code == merchantcode %}
+                           {% if merchitemb.adult_child == 'C' %}
+                                ac=1;
+                           {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    if(ac==0){
+                        var ac=document.getElementById('childmerch_{{ merchantcode }}');
+                        var qa=document.getElementsByName('childqty_{{ merchantcode }}');
+                        ac.style="display:all;";
+                        qa[0].style="display:all;";
+                    }
+                {% elif merchitem.adult_child == 'C' %}
+                    {% for merchitemc in merchantitems %}
+                        {% if merchitemc.merchant_code == merchantcode %}
+                           {% if merchitemc.adult_child == 'A' %}
+                                ca=1;
+                           {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    if(ca==0){
+                        var ca=document.getElementById('adultmerch_{{ merchantcode }}');
+                        ca.style="display:all;";
+                        var qc=document.getElementsByName('adultqty_{{ merchantcode }}');
+                        qc[0].style="display:all;";
+                    }
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+    if(cou==0){
+        var ac=document.getElementById('childmerch_{{ merchantcode }}');
+        var qa=document.getElementsByName('childqty_{{ merchantcode }}');
+        ac.style="display:all;";
+        qa[0].style="display:all;";
+        var ca=document.getElementById('adultmerch_{{ merchantcode }}');
+        ca.style="display:all;";
+        var qc=document.getElementsByName('adultqty_{{ merchantcode }}');
+        qc[0].style="display:all;";
+        document.getElementById('buy_id_{{ forloop.counter0 }}').disabled=false;
+    }
+
+    {% endfor %}
+    }
+
+</script>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+<body onload="checkaduchi()">
+{% if success %}
+    <h3 class="pt-3 pb-3">Congrats! You have successfully bought the tickets!</h3>
+    <h5 class="pb-3">Ticket ID: {{ t_id }}</h5>
+    <h6 class="pb-3">Total spent: {{ tot_amt }}</h6>
+    <br>
+{% else %}
+<div class="container" style="background-color:#f3f7f8;">
+  <div class="container-fluid">
+      <div class="pb-5"></div>
+      <input type="hidden" value="{{ wallet.cash_balance }}" id="wallet_balance">
+      {% for merchant_code in merchant %}
+      <form method="post" id="outer-form">
+          <input type="hidden" name="forid" id="forid">
+          <input type="hidden" name="merchantcode" id="merchantcode">
+
+        <div class="row">
+            {% csrf_token %}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 item-mb">
+                <div class="service-box1 bg-body">
+                <div class="row">
+                    <div class="col-1">
+                        {% if merchant_code.merchant_img %}
+                          <img src="{{ merchant_code.merchant_img.url }}" height="45" width="95" alt="Cannot be found!">
+                        {% endif %}
+                    </div>
+
+                    <div class="col-2 padsix">
+                    <h5 class="pb-3 text-center">
+                       <a href="#" style="color:black;">
+                           {{ merchant_code.merchant_contact_name }}
+                       </a>
+                    </h5>
+                    </div>
+                        <div class="col-2 text-center">
+                            <h6 id="adultmerch_{{ merchant_code }}">Adult(s) - S$
+                                    {% for item in merchantitems %}
+                                        {% if item.merchant_code == merchant_code %}
+                                            {% if item.adult_child == 'A' %}
+                                            <input type="hidden" style="width:0px;" id="adult_price_{{ forloop.parentloop.counter0 }}" value="{{ item.price }}">
+                                                <span>
+                                                    {% if item.price %}{{ item.price }}{% else %}0.0{% endif %}
+                                                </span>
+                                            {% elif item.adult_child == 'B' %}
+                                            <input type="hidden" style="width:0px;" id="adult_priceb_{{ forloop.parentloop.counter0 }}" value="{% if item.price %}{{ item.price }}{% else %}0.0{% endif %}">
+                                                    {% if item.price %}{{ item.price }}{% else %}0.0{% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                Discount :
+                                    {% for item in merchantitems %}
+                                        {% if item.merchant_code == merchant_code %}
+                                            {% if item.adult_child == 'A' %}
+                                            <input type="hidden" style="width:0px;" id="adult_discount_{{ forloop.parentloop.counter0 }}" value="{{ item.discount }}">
+                                                <span>
+                                                    {% if item.discount %}{{ item.discount }}{% else %}0.0{% endif %}
+                                                </span>
+                                            {% elif item.adult_child == 'B' %}
+                                            <input type="hidden" style="width:0px;" id="adult_discountb_{{ forloop.parentloop.counter0 }}" value="{% if item.discount %}{{ item.discount }}{% else %}0.0{% endif %}">
+                                                    {% if item.discount %}{{ item.discount }}{% else %}0.0{% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    %
+                            </h6>
+                        </div>
+                        <div class="col-1 text-center">
+                            <input type="number" min=0 name="adultqty_{{ merchant_code }}" id="adult_qty_{{ forloop.counter0 }}" onclick="merchantfn({{ forloop.counter0 }})" onkeyup="merchantfn({{ forloop.counter0 }})" style="width:50px;text-align:center;" placeholder="Qty">
+                        </div>
+                        <div class="col-2 text-center">
+                            <h6 id="childmerch_{{ merchant_code }}">Children - S$
+                                    {% for item in merchantitems %}
+                                        {% if item.merchant_code == merchant_code %}
+                                            {% if item.adult_child == 'C' %}
+                                            <input type="hidden" style="width:0px;" id="child_price_{{ forloop.parentloop.counter0 }}" value="{{ item.price }}">
+                                            <span>
+                                                    {% if item.price %}{{ item.price }}{% else %}0.0{% endif %}
+                                            </span>
+                                            {% elif item.adult_child == 'B' %}
+                                            <input type="hidden" style="width:0px;" id="child_priceb_{{ forloop.parentloop.counter0 }}" value="{% if item.price %}{{ item.price }}{% else %}0.00{% endif %}">
+                                                    {% if item.price %}{{ item.price }}{% else %}0.0{% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                Discount :
+                                {% for item in merchantitems %}
+                                    {% if item.merchant_code == merchant_code %}
+                                        {% if item.adult_child == 'C' %}
+                                            <input type="hidden" style="width:0px;" id="child_discount_{{ forloop.parentloop.counter0 }}" value="{{ item.discount }}">
+                                        <span>
+                                            {% if item.discount %}{{ item.discount }}{% else %}0.0{% endif %}
+                                        </span>
+                                        {% elif item.adult_child == 'B' %}
+                                            <input type="hidden" style="width:0px;" id="child_discountb_{{ forloop.parentloop.counter0 }}" value="{% if item.discount %}{{ item.discount }}{% else %}0.0{% endif %}">
+                                            {% if item.discount %}{{ item.discount }}{% else %}0.0{% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                %</h6>
+                        </div>
+                        <div class="col-1">
+                            <input type="number" min="0" id="child_qty_{{ forloop.counter0 }}" name="childqty_{{ merchant_code }}" onclick="merchantfn({{ forloop.counter0 }})" onkeyup="merchantfn({{ forloop.counter0 }})" style="width:50px;text-align:center;" placeholder="Qty">
+                        </div>
+                        <div class="col-2 text-center">
+                            <h6 id="totalcost_{{ forloop.counter0 }}" class="dispnon">Total Cost &nbsp;<input type="text" readonly style="width:80px;border:none;border-shadow:none;" id="merchant_total_{{ forloop.counter0 }}">
+                            </h6>
+                            <span  class="balerr" id="balance_error_{{ forloop.counter0 }}"></span>
+
+                        </div>
+                        <div class="col-1 padzero">
+                          <div class="text-center">
+                              <!--<button type="submit" name="submit_merchant_{{ forloop.counter0 }}" onclick="buyticks({{ forloop.counter0 }})" class="btn btn-danger btn-sm" id="buyticks_{{ forloop.counter0 }}">Buy Tickets</button>-->
+                              <button type="button" name="buy_tickets_{{ forloop.counter0 }}" id="buy_id_{{ forloop.counter0 }}" onclick="buyFunction({{ forloop.counter0 }},'{{ merchant_code.merchant_code }}')" class="btn btn-danger btn-sm" data-toggle="modal" value="{{ forloop.counter0}}" data-target="#ticketModal">Buy Tickets</button>
+
+                                  <div class="modal fade" id="ticketModal" role="dialog">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="">
+                                          <button type="button" class="close" onclick="relofn()" data-dismiss="modal">&times;</button>
+                                          <h5 class="text-center pt-3 pb-3" style="border-bottom:2px solid gray">Confirm Buy Tickets??</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" method="POST" id="inner-form">
+                                                {% csrf_token %}
+                                                    <div class="">
+                                                        <h6 class='text-center pb-3' id="adult_cont"></h6>
+                                                        <h6 class='text-center pb-3' id="child_cont"></h6>
+                                                        <h6 class="text-center pb-3" id="total_cost_cont"></h6>
+                                                    </div>
+
+                                                <button type="submit" name="submit_merchant_{{ forloop.counter0 }}" class="btn btn-danger btn-sm" id="buyticks_">Buy Tickets</button>
+                                                <div class="pt-3 pb-3">
+                                                   <span class="text-center " style="color:#ed2939;font-weight:600;" id="successcont"></span>
+                                                </div>
+                                            </form>
+                                            <!--onclick="buyticks({{ forloop.counter0 }})"-->
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                          </div>
+                        </div>
+                </div>
+                    <!--<div class="view">(19,805)</div>-->
+                    <!--<p>Pay Bills.</p>-->
+                </div>
+            </div>
+    </div>
+      </form>
+{% endfor %}
+
+<!--<div id="dialog-confirm" title="Confirm Buy Tickets?">-->
+  <!--<p id="dialog-contents"><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span></p>-->
+<!--</div>-->
+
+  </div>
+
+</div>
+{% endif %}
+<!--<script type="text/javascript">-->
+        <!---->
+    <!---->
+<!--</script>-->
+
+
+<script type="text/javascript">
+    function buyFunction(id,merchant_code){
+        var adult_qty = document.getElementById("adult_qty_"+id).value;
+        var child_qty = document.getElementById("child_qty_"+id).value;
+        var tot_amt = document.getElementById('merchant_total_'+id).value;
+
+
+        var adult_price = document.getElementById("adult_price_"+id);
+        if(!adult_price){
+            var adult_price = document.getElementById('adult_priceb_'+id);
+            if(!adult_price){
+                var adult_price = 0.0;
+            }
+            else{
+                var adult_price = document.getElementById('adult_priceb_'+id).value;
+            }
+        }
+        else{
+            var adult_price = document.getElementById("adult_price_"+id).value;
+        }
+
+
+        var child_price = document.getElementById("child_price_"+id);
+        if(!child_price){
+            var child_price = document.getElementById('child_priceb_'+id);
+            if(!child_price){
+                var child_price = 0.0;
+             }
+             else{
+                var child_price = document.getElementById('child_priceb_'+id).value;
+             }
+        }
+        else{
+            var child_price = document.getElementById('child_price_'+id).value;
+        }
+
+
+
+        var adult_discount = document.getElementById("adult_discount_"+id);
+        if(!adult_discount){
+            var adult_discount = document.getElementById('adult_discountb_'+id);
+            if(!adult_discount){
+                var adult_discount = 0.0;
+             }
+             else{
+                var adult_discount = document.getElementById('adult_discountb_'+id).value;
+             }
+        }
+        else{
+            var adult_discount = document.getElementById('adult_discount_'+id).value;
+        }
+
+        var child_discount = document.getElementById("child_discount_"+id);
+
+        if(!child_discount){
+            var child_discount = document.getElementById('child_discountb_'+id);
+            if(!child_discount){
+                var child_discount = 0.0;
+             }
+             else{
+                var child_discount = document.getElementById('child_discountb_'+id).value;
+             }
+        }
+        else{
+            var child_discount = document.getElementById('child_discount_'+id).value;
+        }
+
+
+
+        var adult_cont= document.getElementById('adult_cont');
+        var child_cont= document.getElementById('child_cont');
+        var total_cost_cont= document.getElementById('total_cost_cont');
+        if(adult_qty==''){
+            child_cont.innerHTML="Number of children: "+child_qty+"<br> Price for child: "+child_price+"<br> Discount of "+ child_discount*child_price/100+'SGD.('+child_discount+'%)';
+            total_cost_cont.innerHTML="Total cost(discount applied): SGD."+tot_amt+" SGD.";
+            $('input[name="forid"]').val(id);
+            $('input[name="merchantcode"]').val(merchant_code);
+        }
+        else if(child_qty==''){
+            adult_cont.innerHTML="Number of adult(s): "+adult_qty+"<br> Price for adult: "+adult_price+"<br> Discount of "+ adult_discount*adult_price/100+'SGD.('+adult_discount+'%)';
+            total_cost_cont.innerHTML="Total cost(discount applied): SGD."+tot_amt+" SGD.";
+            $('input[name="forid"]').val(id);
+            $('input[name="merchantcode"]').val(merchant_code);
+        }
+        else{
+            adult_cont.innerHTML="Number of adult(s): "+adult_qty+"<br> Price for adult: "+adult_price+"<br> Discount of "+ adult_discount*adult_price/100+'SGD.('+adult_discount+'%)';
+            child_cont.innerHTML="Number of children: "+child_qty+"<br> Price for child: "+child_price+"<br> Discount of "+ child_discount*child_price/100+'SGD.('+child_discount+'%)';
+            total_cost_cont.innerHTML="Total cost(discount applied): "+tot_amt+" SGD.";
+            $('input[name="forid"]').val(id);
+            $('input[name="merchantcode"]').val(merchant_code);
+        }
+    }
+</script>
+
+<!--<script type="text/javascript">-->
+    <!--$(document).on('submit','#outer-form',function(e){-->
+       <!--e.preventDefault();-->
+    <!--});-->
+<!--</script>-->
+
+
+
+
+<script type="text/javascript">
+    $(document).on('submit','#outer-form',function(e){
+        e.preventDefault();
+        <!--var id = e;-->
+        <!--var id = this.value-->
+        var id = document.getElementById("forid").value;
+        var merchantcode = document.getElementById("merchantcode").value;
+        var adult_qty = document.getElementById("adult_qty_"+id).value;
+        var child_qty = document.getElementById("child_qty_"+id).value;
+        var adult_price = document.getElementById("adult_price_"+id);
+        if(!adult_price){
+            var adult_price = document.getElementById('adult_priceb_'+id);
+            if(!adult_price){
+                var adult_price = 0.0;
+            }
+            else{
+                var adult_price = document.getElementById('adult_priceb_'+id).value;
+            }
+        }
+        else{
+            var adult_price = document.getElementById("adult_price_"+id).value;
+        }
+
+
+        var child_price = document.getElementById("child_price_"+id);
+        if(!child_price){
+            var child_price = document.getElementById('child_priceb_'+id);
+            if(!child_price){
+                var child_price = 0.0;
+             }
+             else{
+                var child_price = document.getElementById('child_priceb_'+id).value;
+             }
+        }
+        else{
+            var child_price = document.getElementById('child_price_'+id).value;
+        }
+
+
+        var adult_discount = document.getElementById("adult_discount_"+id);
+        if(!adult_discount){
+            var adult_discount = document.getElementById('adult_discountb_'+id);
+            if(!adult_discount){
+                var adult_discount = 0.0;
+             }
+             else{
+                var adult_discount = document.getElementById('adult_discountb_'+id).value;
+             }
+        }
+        else{
+            var adult_discount = document.getElementById('adult_discount_'+id).value;
+        }
+
+
+        var child_discount = document.getElementById("child_discount_"+id);
+
+        if(!child_discount){
+            var child_discount = document.getElementById('child_discountb_'+id);
+            if(!child_discount){
+                var child_discount = 0.0;
+             }
+             else{
+                var child_discount = document.getElementById('child_discountb_'+id).value;
+             }
+        }
+        else{
+            var child_discount = document.getElementById('child_discount_'+id).value;
+        }
+
+
+        var tot_amt = document.getElementById('merchant_total_'+id).value;
+        var profpk="{{ profile.pk }}";
+        if(child_qty==''){
+            child_qty=0
+        }
+        if(adult_qty==''){
+            adult_qty=0
+        }
+        $.ajax({
+            type: "POST",
+            url: "{% url 'merchants:buyticks' pk=profile.pk %}",
+            data: {
+                total_amt: tot_amt,
+                var_id: parseInt(id),
+                profile_pk: parseInt(profpk),
+                adult_quan: adult_qty,
+                child_quan: child_qty,
+                merchantcode: merchantcode,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(data){
+            if(data.success===true){
+                var x=document.getElementById('successcont');
+                var total=data.tot_amt;
+                x.innerHTML="Success! Tickets purchased for "+total+" SGD! Ticket ID: "+data.t_id;
+                document.getElementById("buyticks_").disabled = true;
+                setTimeout(function() {
+                  relofn();
+                }, 3000);
+            }
+            else{
+                var x=document.getElementById('successcont');
+                x.innerHTML="Failed! You are not privileged to purchase more than your available balance!";
+                document.getElementById("buyticks_").disabled = true;
+                setTimeout(function() {
+                  relofn();
+                }, 3000);
+            }
+            },
+        });
+    });
+</script>
+
+<script type="text/javascript">
+function relofn() {
+    window.location.reload(true);
+}
+</script>
+
+<script type="text/javascript">
+    function merchantfn(id){
+        var adult_qty = document.getElementById("adult_qty_"+id).value;
+        var child_qty = document.getElementById("child_qty_"+id).value;
+        if(adult_qty<0 || child_qty<0 || adult_qty%1!=0 || child_qty%1!=0){
+            alert('Quantity should only be a integer value!');
+            document.getElementById('buy_id_'+id).disabled = true;
+            var balance_err = document.getElementById('balance_error_'+id);
+            balance_err.innerHTML="Please give a proper quantity!";
+            var total_cost=document.getElementById('totalcost_'+id);
+            total_cost.style="display:none;";
+            $("#merchant_total_"+id).val('');
+        }
+        else{
+            if(adult_qty>0 || child_qty>0){
+                document.getElementById('buy_id_'+id).disabled = false;
+            }
+            else{
+                document.getElementById('buy_id_'+id).disabled = true;
+            }
+        }
+        var adult_price = document.getElementById("adult_price_"+id);
+        if(!adult_price){
+            var adult_price = document.getElementById('adult_priceb_'+id);
+            if(!adult_price){
+                var adult_price = 0.0;
+            }
+            else{
+                var adult_price = document.getElementById('adult_priceb_'+id).value;
+            }
+        }
+        else{
+            var adult_price = document.getElementById("adult_price_"+id).value;
+        }
+        var child_price = document.getElementById("child_price_"+id);
+        if(!child_price){
+            var child_price = document.getElementById('child_priceb_'+id);
+            if(!child_price){
+                var child_price = 0.0;
+             }
+             else{
+                var child_price = document.getElementById('child_priceb_'+id).value;
+             }
+        }
+        else{
+            var child_price = document.getElementById('child_price_'+id).value;
+        }
+
+        var adult_discount = document.getElementById("adult_discount_"+id);
+        if(!adult_discount){
+            var adult_discount = document.getElementById('adult_discountb_'+id);
+            if(!adult_discount){
+               var adult_discount=0.0;
+            }
+            else{
+                var adult_discount = document.getElementById('adult_discountb_'+id).value;
+            }
+        }
+        else{
+            var adult_discount = document.getElementById('adult_discount_'+id).value;
+        }
+
+        var child_discount = document.getElementById("child_discount_"+id);
+        if(!child_discount){
+            var child_discount = document.getElementById('child_discountb_'+id);
+            if(!child_discount){
+                var child_discount=0.0;
+            }
+            else{
+                var child_discount = document.getElementById('child_discountb_'+id).value;
+            }
+        }
+        else{
+            var child_discount = document.getElementById('child_discount_'+id).value;
+        }
+
+        var wallet_balance = document.getElementById('wallet_balance').value;
+        var total = (adult_qty*adult_price)*(100.0-adult_discount)/100 + (child_qty*child_price)*(100.0-child_discount)/100;
+        total=total.toFixed(2);
+
+        if(parseFloat(total)>parseFloat(wallet_balance)){
+            var balance_err = document.getElementById('balance_error_'+id);
+            balance_err.innerHTML="Alert! Exceeds Cash Balance!";
+            var total_cost=document.getElementById('totalcost_'+id);
+            total_cost.style="display:block;";
+            $("#merchant_total_"+id).val(total);
+        }
+        else if(parseFloat(total)==0.0 || (adult_qty=='' && child_qty=='')){
+            var balance_err = document.getElementById('balance_error_'+id);
+            balance_err.innerHTML="";
+            var total_cost=document.getElementById('totalcost_'+id);
+            total_cost.style="display:none;";
+        }
+        else if(parseFloat(total)<0 || adult_qty%1!=0 || child_qty%1!=0){
+            var balance_err = document.getElementById('balance_error_'+id);
+            balance_err.innerHTML="Please give a proper quantity!";
+            var total_cost=document.getElementById('totalcost_'+id);
+            total_cost.style="display:none;";
+        }
+        else{
+            var balance_err = document.getElementById('balance_error_'+id);
+            balance_err.innerHTML="";
+            var total_cost=document.getElementById('totalcost_'+id);
+            total_cost.style="display:block;";
+            $("#merchant_total_"+id).val(total);
+        }
+    }
+</script>
+
+
+  <!--<script type="text/javascript">-->
+<!--function buyticks(id){-->
+
+  <!--$( function() {-->
+    <!--$( "#dialog-confirm" ).dialog({-->
+      <!--resizable: false,-->
+      <!--height: "auto",-->
+      <!--width: 400,-->
+      <!--modal: true,-->
+      <!--buttons: {-->
+        <!--"Confirm Buy": function() {-->
+          <!--&lt;!&ndash;$( this ).dialog( "close" );&ndash;&gt;-->
+            <!--var tot_amt = document.getElementById('merchant_total_'+id);-->
+            <!--var adult_qty = document.getElementById("adult_qty_"+id).value;-->
+            <!--var child_qty = document.getElementById("child_qty_"+id).value;-->
+            <!--var adult_price = document.getElementById("adult_price_"+id).value;-->
+            <!--var child_price = document.getElementById("child_price_"+id).value;-->
+            <!--var adult_discount = document.getElementById("adult_discount_"+id).value;-->
+            <!--var child_discount = document.getElementById("child_discount_"+id).value;-->
+            <!--profpk="{{ profile.pk }}";-->
+            <!--if(child_qty==''){-->
+                <!--child_qty=0-->
+            <!--}-->
+            <!--if(adult_qty==''){-->
+                <!--adult_qty=0-->
+            <!--}-->
+
+            <!--return $.ajax({-->
+                <!--type: "POST",-->
+                <!--url: "{% url 'merchants:buyticks' pk=profile.pk %}",-->
+                <!--data: {-->
+                    <!--total_amt: tot_amt.value,-->
+                    <!--var_id: parseInt(id),-->
+                    <!--profile_pk: parseInt(profpk),-->
+                    <!--adult_quan: adult_qty,-->
+                    <!--child_quan: child_qty,-->
+                    <!--'csrfmiddlewaretoken': '{{ csrf_token }}',-->
+                <!--},-->
+                <!--success: function(){},-->
+            <!--});-->
+        <!--},-->
+        <!--Cancel: function() {-->
+          <!--$( this ).dialog( "close" );-->
+        <!--}-->
+      <!--}-->
+    <!--});-->
+  <!--} );-->
+<!--}-->
+  <!--</script>-->
+
+<!--<script type="text/javascript">-->
+<!--function buyticks(id){-->
+
+    <!--var adult_qty = document.getElementById("adult_qty_"+id).value;-->
+    <!--var child_qty = document.getElementById("child_qty_"+id).value;-->
+    <!--var adult_price = document.getElementById("adult_price_"+id).value;-->
+    <!--var child_price = document.getElementById("child_price_"+id).value;-->
+    <!--var adult_discount = document.getElementById("adult_discount_"+id).value;-->
+    <!--var child_discount = document.getElementById("child_discount_"+id).value;-->
+    <!--var tot_amt = document.getElementById('merchant_total_'+id).value;-->
+
+    <!--profpk="{{ profile.pk }}";-->
+    <!--if(child_qty==''){-->
+        <!--child_qty=0-->
+    <!--}-->
+    <!--if(adult_qty==''){-->
+        <!--adult_qty=0-->
+    <!--}-->
+
+    <!--return $.ajax({-->
+        <!--type: "POST",-->
+        <!--url: "{% url 'merchants:buyticks' pk=profile.pk %}",-->
+        <!--data: {-->
+            <!--total_amt: tot_amt,-->
+            <!--var_id: parseInt(id),-->
+            <!--profile_pk: parseInt(profpk),-->
+            <!--adult_quan: adult_qty,-->
+            <!--child_quan: child_qty,-->
+            <!--'csrfmiddlewaretoken': '{{ csrf_token }}',-->
+        <!--},-->
+        <!--success: function(){},-->
+    <!--});-->
+<!--}-->
+<!--</script>-->
+
+
+
+{% endblock %}
+
+
+</body>
