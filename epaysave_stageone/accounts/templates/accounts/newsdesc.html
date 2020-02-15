@@ -1,0 +1,35 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <br><br>
+<div class="row">
+    <!--<div class="col-4 text-center">-->
+    <!--</div>-->
+    <div class="col-8 text-center">
+        <div class="pt-3 pb-3 pr-3 pl-3" style="background-color:white;">
+
+        <h4 class="text-center">{{ news.news_title }}</h4>
+            <div class="pt-4 pb-4">
+                {% if news.newspic %}
+                  <img src="{{ news.newspic.url }}" style="height:300px;width:600px;" class='img-fluid profimg' alt="Cannot be found!">
+                {% endif %}
+            </div>
+        <p>{{ news.description }}</p>
+        <div style="float:right;">{{ news.news_date }}</div>
+            <br>
+        <div style="float:right;" class="pb-3">-reported by Chandru{{ news.news_editor }}</div>
+        </div>
+    </div>
+    <div class="col-4 text-center">
+        <div class="pt-3 pb-3 pr-3 pl-3" style="background-color:white;">
+        {% if news.news_video_file %}
+            <video width='370' height= '260' controls>
+            <source src="{{ news.news_video_file.url }}">
+            Your browser does not support the video tag.
+            </video>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

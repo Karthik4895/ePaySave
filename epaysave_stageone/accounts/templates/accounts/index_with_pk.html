@@ -1,0 +1,312 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+
+  {% block title %}
+  <title>ePaySave Home</title>
+  {% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 40%;
+      }
+    </style>
+
+{% endblock %}
+{% block wallet %}
+
+<div class="pt-2" style="margin:3px 0;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px;">Balance :{% block wallet_cash %}
+    {{wallet.wallet_bal}} SGD.
+    {% endblock %}
+  </p>
+  </a>
+  <a class="nav-item nav-link navbar-light"style="color:rgb(255,255,255);font-size:13px;margin:5px 0;line-height:0.5px;" href="{% url 'accounts:history_transac' pk=profile.pk %}">Wallet Transactions</a>
+</div>
+
+
+<a class="nav-item pt-3 nav-link navbar-light" style="color:rgb(255,255,255);" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+<img src="{% static 'wallet-icon.png' %}" height=28 width=24 class="pb-1 d-inline-block alighn-top" />
+</a>
+
+<div class="pt-2" style="margin-top:3px;">
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Cash :{% block cash %}
+    {{wallet.cash_balance}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Savings :{% block savings %}
+    {{wallet.savings}} SGD.
+    {% endblock %}
+</p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Loan amt :{% block loan %}
+    {{wallet.loan_amt}} SGD.
+    {% endblock %}
+</p>
+  </a>
+
+
+</div>
+
+<div class="pt-2 pl-2" style="margin-top:3px;">
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Recycle : {% block recycle %}
+    {{wallet.recycle_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Incentive : {% block incentive %}
+    {{wallet.incentive_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+  <a class="wallet nav-item navbar-light" style="color:rgb(255,255,255);line-height:0.5px !important;" href="{% url 'accounts:wallet_view' pk=profile.pk %}">
+    <p style="line-height:0.5px">Crowd fund: {% block crowd %}
+    {{wallet.crowd_wallet}} SGD.
+    {% endblock %}
+    </p>
+  </a>
+
+
+
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+<div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="{% url 'merchants:buyticks' pk=profile.pk %}" style="color:#212529;">Buy Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="{% url 'groceries:grocery_list' pk=profile.pk %}" style="color:#212529;">Purchase Grocery Items</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Groceries</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:#212529;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+<script>
+// Note: This example requires that you consent to location sharing when
+// prompted by your browser. If you see the error "The Geolocation service
+// failed.", it means you probably did not give permission for the browser to
+// locate you.
+var map, infoWindow;
+function initMap() {
+map = new google.maps.Map(document.getElementById('map'), {
+  center: {lat: -34.397, lng: 150.644},
+  zoom: 6
+});
+infoWindow = new google.maps.InfoWindow;
+
+// Try HTML5 geolocation.
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var pos = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+    console.log(pos);
+    updatelatlong(pos);
+    infoWindow.setPosition(pos);
+    infoWindow.setContent('Location found.');
+    infoWindow.open(map);
+    map.setCenter(pos);
+  }, function() {
+    handleLocationError(true, infoWindow, map.getCenter());
+  });
+} else {
+  // Browser doesn't support Geolocation
+  handleLocationError(false, infoWindow, map.getCenter());
+}
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+infoWindow.setPosition(pos);
+infoWindow.setContent(browserHasGeolocation ?
+                      'Error: The Geolocation service failed.' :
+                      'Error: Your browser doesn\'t support geolocation.');
+infoWindow.open(map);
+}
+
+function updatelatlong(pos){
+$.ajax({
+    type: "POST",
+    data: {
+    'pos':pos,
+    'csrfmiddlewaretoken': '{{ csrf_token }}'
+    },
+    url: "{% url 'accounts:map_view' pk=profile.pk %}",
+    success: function () {
+    }
+});
+}
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAk742GvcOPdD_qlA3-2jl57r_X-Q-dOy0&callback=initMap">
+</script>
+
+    <div id="map" style="display:none;"></div>
+
+
+
+{% endblock %}

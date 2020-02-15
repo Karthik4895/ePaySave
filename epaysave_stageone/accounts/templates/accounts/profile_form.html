@@ -1,0 +1,934 @@
+{% extends 'accounts/base.html' %}
+
+  {% block title %}
+  <title>ePaySave Registration</title>
+  {% endblock %}
+
+
+{% load staticfiles %}
+
+{% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+
+<script>
+function disableSubmit() {
+    document.getElementById("submit").disabled = true;
+}
+
+function activateButton(element) {
+  if(element.checked) {
+    document.getElementById("submit").disabled = false;
+   }
+   else  {
+    document.getElementById("submit").disabled = true;
+  }
+}
+</script>
+
+{% endblock %}
+
+{% block body %}
+<body onload="disableSubmit()" class="body_tag">
+{% endblock %}
+
+
+{% block signup %}
+<a class="nav-item nav-link pr-3 reg" style="color:rgb(255,255,255);" href="{% url 'accounts:signup' %}">Register</a>
+{% endblock %}
+
+
+
+{% block content %}
+    {% if wrong_ref %}
+        <h2 class="text-center pt-3 pb-3">Referral Contact did not match any of our registered contacts! Thank You for Registering!</h2>
+<p>
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+
+<div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Parking and Fines</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Parking and Fines.</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Air Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Air Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+
+
+    {% elif failed_ref %}
+        <h2 class="text-center pt-3 pb-3">Failed Referral.. You cannot refer yourself. Thank You for Registering!</h2>
+<p>
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+
+<div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Parking and Fines</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Parking and Fines.</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Air Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Air Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+
+
+    {% elif registered %}
+      <br>
+      <br>
+      <h4 class="text-center pt-3 pb-3">Thank You for registering with us! You can now login to your account! </h4>
+<p>
+    ePaySave.com has engaged the world’s cash based consumers through our powerful, yet simple-to-use, mobile & online payment solution. ePaySave.com account holder can now participate in the online economy, and transact with a growing number of global products and service options including bill payments and mobile phone top-up, from anywhere in the world, at any time of the day, with just one ePaysave.com account.
+
+    ePaySave,com will be extended to buy Local Attractions (Singapore Zoo, Birdpark, Science Centre, Sentosa Island entertainments, and movie tickets). Building Maintenance fee, Singapore Power fee, Insurance all could be paid thru ePaysave in near future.
+</p>
+
+<div class="jumbotron" style="background-color:#f3f7f8;">
+
+
+  <div class="container-fluid">
+    <div class="row text-center">
+      <!--<div class="col-lg-2 col-md-3 col-xl-2 col-sm-3 d-none d-lg-block">-->
+
+      <!--</div>-->
+      <!--<div class="col-lg-2 col-md-4 col-xl-2 col-sm-4 col-6 index_box" style="display:inline-block;">-->
+          <!--<div class="pt-2">-->
+            <!--<img src="{% static 'final_logo.png' %}" alt="EPSAVE" height="80" width="120">-->
+          <!--</div>-->
+          <!--<br><br>-->
+          <!--<h5>Apply Loan</h5>-->
+          <!--<br><br>-->
+      <!--</div>-->
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Apply Loan</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Apply Loan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Insurance</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Insurance.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Parking and Fines</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Parking and Fines.</p>
+                        </div>
+                    </div>
+    </div>
+
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Bills</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Bills.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Air Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Air Tickets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Restaurant</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Restaurant Bills.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Taxi</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Taxi.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Pay Zoo Bird Park Zentosa</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Pay Zoo Bird Park Zentosa.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Get Movie Tickets</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Movie Tickets.</p>
+                        </div>
+                    </div>
+    </div>
+    <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Buy Google Play Cards</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Buy Google Play Cards.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Cars and Bikes</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Cars and Bikes.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 col-12 item-mb">
+                        <div class="service-box1 bg-body text-center">
+                            <img src="{% static 'logo_red.jpg' %}" alt="Epaysave" height="85" width="140">
+                            <h3 class="title-medium-dark mb-none">
+                                <a href="#" style="color:black;">Book Hotel Rooms</a>
+                            </h3>
+                            <!--<div class="view">(19,805)</div>-->
+                            <p>Book Hotel Rooms.</p>
+                        </div>
+                    </div>
+    </div>
+
+  </div>
+</div>
+
+    {% else %}
+    {% load widget_tweaks %}
+
+    <br>
+    <form id="profile_form" method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{form.as_p}}
+
+      <!-- {{ user_form.non_field_errors }}
+      {% for hidden_field in user_form.hidden_fields %}
+        {{ hidden_field.errors }}
+        {{ hidden_field }}
+      {% endfor %} -->
+
+
+        <section class="s-space-bottom-full bg-accent-shadow-body">
+
+            <div class="container">
+				<div class="gradient-wrapper">
+                            <div class="gradient-title">
+                                <h2 style="font-family: cursive;" class="text-center">Sign Up Form</h2>
+                            </div>
+                <div class="row input-layout1 gradient-padding post-ad-page">
+
+
+
+					<div class="col-md-6">
+
+                                    <div class="border-bottom-2 pb-30">
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ user_form.username.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ user_form.username.errors }}
+                                                    {% render_field user_form.username class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.first_name.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.first_name.errors }}
+                                                    {% render_field profile_form.first_name class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.mobile_no.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.mobile_no.errors }}
+                                                    {% render_field profile_form.mobile_no class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.address_line_1.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.address_line_1.errors }}
+                                                   {% render_field profile_form.address_line_1 class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.address_line_2.label_tag }}</label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.address_line_2.errors }}
+                                                    {% render_field profile_form.address_line_2 class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.postal_code.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.postal_code.errors }}
+                                                    {% render_field profile_form.postal_code class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.ic.label_tag }}/Passport:</label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.ic.errors }}
+                                                    {% render_field profile_form.ic class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.image.label_tag }}</label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.image.errors }}
+                                                    {% render_field profile_form.image %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                            </div>
+
+					<div class="col-md-6">
+
+                                    <div class="border-bottom-2 pb-30">
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ user_form.password.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ user_form.password.errors }}
+                                                    {% render_field user_form.password class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.last_name.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.last_name.errors }}
+                                                    {% render_field profile_form.last_name class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.email.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.email.errors }}
+                                                    {% render_field profile_form.email class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.city.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.city.errors }}
+                                                    {% render_field profile_form.city class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.country.label_tag }}<span> *</span></label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.country.errors }}
+                                                    {% render_field profile_form.country class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.referral_contact.label_tag }}</label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.referral_contact.errors }}
+                                                    {% render_field profile_form.referral_contact class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-3 col-12">
+                                                <label class="control-label" style="font-weight:600;">{{ profile_form.promo_coupon.label_tag }}</label>
+                                            </div>
+                                            <div class="col-sm-9 col-12">
+                                                <div class="form-group">
+                                                   {{ profile_form.promo_coupon.errors }}
+                                                    {% render_field profile_form.promo_coupon class="text-center" %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                            </div>
+
+
+               </div>
+			   </div>
+            </div>
+        </section>
+
+<div class="container">
+<div class="gradient-wrapper">
+  <div class="gradient-padding" style="height:400px;overflow:auto;background-color:white; font-size:16px; color:black;scrollbar-base-color:gold;font-family:Roboto!important;padding:10px;">
+
+    <h4 class="text-center">Terms & conditions</h4>
+      <p>
+        By using (the “Site”) and the features on it, you signify your acceptance of the Site’s terms and conditions of use (the “Terms”) and the Privacy Policy. If you do not agree to these Terms and the Privacy Statement, please do not use the Site.
+        Any special rules for the use of other items provided on the Site may be included elsewhere within the Site and are incorporated into these Terms by reference. Your relationship with the Company is governed by these Terms, as well as additional agreements the Company requests that you execute.
+      </p>
+      <p>
+        The Company may revise, update, or otherwise amend these Terms at any time. Your use of the Site after we post changes to these Terms means you accept those changes.
+      </p>
+
+      <h6>SITE CONTENT</h6>
+      <p>
+        The Site may include or make available (1) account positions, balances, transactions, history; (2) general news and information, commentary, research reports and data concerning the financial markets, securities and other subjects; (3) market data such as quotations for securities transactions and/or last sale information for completed securities transactions reported in accordance with securities regulations; (4) financial and investment interactive tools, such as alerts or calculators, coaching sessions; (5) access to blogs, wikis, online webinars, conferences, telecasts, podcasts and other public forums; (6) art work, graphics, photographs, images, screen shots, text, music, digitally downloadable files, video clips, trademarks, logos, product and character names or slogans; (7) tax preparation, bill payment and account management tools; and (8) other materials or information (collectively, “Content”). Some of the Content is supplied by companies that are not affiliated with the Company (“Information Providers”). The Company does not prepare, edit, or endorse Content from Information Providers. The Company does not guarantee its accuracy, timeliness, completeness or usefulness, and is not responsible or liable for any content, advertising, products, or other materials on or available from third party sites. Use of the Content from Information Providers is at your own risk. The Company and/or the Information Providers may discontinue or modify any category of Content at any time. You release and agree to indemnify and hold harmless the Company and the Information Providers for any loss or damages that may result.
+      </p>
+      <p>
+        The Company makes no claims that the Content is appropriate or may be downloaded in your country of origin. Access to the Content may not be legal by certain persons or in certain countries. If you access the site, you do so at your own risk and are responsible for compliance with the laws of your jurisdiction.
+      </p>
+      <p>
+        Content posted on the Site is published as of its stated date or, if no date is stated, the date of first posting. Neither the Company nor the Information Providers have, nor have undertaken, any duty to update any such information.
+      </p>
+
+      <h6>USE RESTRICTIONS</h6>
+      <p>
+        Content is legally protected, including without limitation, by copyright laws. Title to the Content remains with the Company and/or the Information Providers. Any use of the Content not expressly permitted by these Terms is a breach of these Terms and may violate copyright, trademark, and other laws. The Company authorizes you to view and download the Content solely for your own lawful, personal, non-commercial use. Any such download or use of the Content shall retain copyright and proprietary rights notices which are contained in the Content. Except as stated herein, none of the Content may be copied, reproduced, distributed, republished, downloaded, displayed, posted or transmitted in any form or by any means without the prior written permission of the Company or its licensors. The use of the Content on any other site or in a networked computer environment for any purpose other than expressly stated is prohibited. All rights not expressly granted herein are reserved to the Company and its licensors. If you violate any of these Terms, your permission to use the Content automatically terminates and you must immediately destroy any copies you have made of any portion of the Content.
+      </p>
+      <p>
+        You may not “mirror” any Content contained in the Site or any other server. You may not use the Site for any purpose that is unlawful or prohibited by these Terms. You may not use the Site in any manner that could damage, disable, overburden, or impair the Site, or interfere with any other party’s use and enjoyment of the Site. You may not attempt to gain unauthorized access to the Site through hacking, password mining, or any other means. The Company reserves the right, in its sole discretion, to terminate your access to the Site, or any portion thereof, at any time, for any reason or for no reason at all, without prior notice or any notice.
+      </p>
+      <p>
+        You are not allowed to use Social Networking sites such as Facebook, Twitter, LinkedIn, and etc to promote and distribute the information on Financial.org, its subsidiaries and partners. Failure to comply with such terms may results in suspension and termination of account usage without further warnings.
+      </p>
+
+      <h6>THIRD PARTY OR EXTERNAL WEBSITES OR RESOURCES </h6>
+      <p>
+        The Site may include links to third party or external websites or resources over which the Company has no control. These links are provided solely as a convenience to users and should not be construed as an endorsement by the Company of content on those third party or external websites or resources. Your access and use of such websites or resources is solely at your own risk. The Company makes no representations or warranties with respect to the content, ownership, or legality of any such linked third party website.
+      </p>
+
+      <h6>BROKERAGE SERVICES</h6>
+      <p>
+        The Company provides self-directed investors with brokerage services and does not make recommendations or offer investment, tax, or legal advice of any kind. You are solely responsible for evaluating the merits and risks associated with the use of any Content on the Site before making any investment or other decision based on such Content. To the maximum extent allowed by law, you agree not to hold the Company or the Information Providers liable for any possible claim for damages arising from any decision you make based on information made available to you through the Site. The Site shall not be considered a solicitation to any person in any jurisdiction where such solicitation would be illegal.
+      </p>
+      <p>
+        Any price quotes may be delayed twenty (20) minutes or longer, according to the rules and regulations applicable to exchanges and the Information Providers. Neither the Company nor the Information Providers make any representations, warranties or other guarantees as to the accuracy or timeliness of any price quotes. Neither the Company nor the Information Providers make any representations, warranties or other guarantees as to the present or future value or suitability of any sale, trade or other transaction involving any particular security or any other investment.
+      </p>
+
+      <h6>YOUR ACCOUNT</h6>
+      <p>
+        If you use the Site, you are responsible for maintaining the confidentiality of your account and password and for restricting access to your computer. You agree to accept responsibility for all activities that occur under your account or password. The Company reserves the right to refuse service, terminate accounts, remove or edit content, or cancel orders in its sole discretion.
+      </p>
+
+      <h6>USER CONTENT</h6>
+      <p>
+        You consent to, and the Company reserves the right to, (a) record and/or retain the dialogue, User Content, or data exchanged on the Site; (b) investigate an allegation that a User Content does not comply with these Terms and determine in its sole discretion to remove or request the removal of the Communication; (c) remove User Content which are abusive, illegal, disruptive, or outdated, or that otherwise fail to comply with these Terms; (d) terminate a user’s access to any or all parts of the Site upon any breach of these Terms or the law; (e) monitor, edit, or disclose any User Content; or (f) edit or delete any User Content posted on the Site, regardless of whether such User Content violates these Terms.
+        Access to blogs, wikis, online conferences, telecasts, podcasts, or other forums (the “Forums”) may be provided by the Site. All communications or other materials made at or through the Forums are public (“User Content”). Neither the Company nor the Information Providers have any obligation to screen, review, approve or endorse any User Content obtained through the Forums. Reliance on the User Content obtained through the Forums is at your own risk. By displaying, publishing, or otherwise posting any User Content on or through the Site, you hereby grant to the Company a perpetual, irrevocable, non-exclusive, sub-licensable, worldwide, fully-paid, royalty free license to use, modify, publicly perform, publicly display, create derivative works, reproduce, distribute, sublicense, and otherwise exploit, in whole or in part, such User Content without the requirement to make payment to you or to any third party or the need to seek any third party permission.
+        You represent and warrant that you own the User Content submitted, displayed, published or posted by you on the website and otherwise have the right to grant the license set forth herein, and the displaying, publishing or posting of any content you submit, and our use of the content, does not and will not violate the privacy rights, publicity rights, copyrights, trademark rights, contract rights or any other intellectual property rights or other rights of any person or entity.
+      </p>
+
+      <p>
+      The personal information you submit to the Company is governed by the Privacy Statement. To the extent there is an inconsistency between the Terms and the Privacy Statement, the Privacy Statement will govern.
+      </p>
+
+      <h6>FORUM RESTRICTIONS</h6>
+      <p>
+        You will not access or otherwise use the Forums in any unlawful manner, for any unlawful purpose or in violation of these Terms, which includes but is not limited to the following:
+      </p>
+      <p>
+        You will not post any User Content that does not comply with these Terms;
+        You will not upload, post, transmit or otherwise make available any User Content that is unlawful, harmful, threatening, abusive, harassing, hateful, racist, pornographic, tortuous, defamatory, vulgar, obscene, libelous, invasive of another’s privacy, hateful, or racially, ethnically or otherwise obscene, threatening, objectionable, or inappropriate as determined by the Company;
+        You will not harm minors in any way;
+        You will not impersonate any person or entity, or falsely state or otherwise misrepresent your affiliation with a person or entity;
+        You will not forge headers or otherwise manipulate identifiers in order to disguise the origin of any material;
+        You will not upload, post or otherwise transmit any material that you do not have a right under any law or under contractual or fiduciary relationships, including without limitation, inside information, proprietary and confidential information learned or disclosed as part of employment relationships or under nondisclosure agreements;
+        You will not upload, post or otherwise transmit any material that infringes any patent, trademark, trade secret, copyright, rights of privacy or publicity, or other proprietary rights of any party;
+        You will not harvest or otherwise collect information about others, including email addresses, without their consent;
+        You will not post the same note more than once (i.e., “spamming”);
+        You will not intentionally or unintentionally violate any applicable local, state, national or international law, including, but not limited to, regulations promulgated by the U.S. Securities and Exchange Commission, any rules of any national or other securities exchange, including without limitation, the New York Stock Exchange, the American Stock Exchange or the NASDAQ, and any regulations having the force of law;
+        You will not post business solicitations or promotions;
+        You will not use the Forums as a forwarding Site to another website; and
+        You will not upload, post or otherwise transmit any material that contains viruses or other malicious technology designed to interrupt, destroy or limit the functionality.
+        You are solely responsible for your User Content, the consequences of making a User Content, and your reliance on any User Content. The Company is not responsible for the consequences of any User Content, or for screening or monitoring User Content made to the Site by users. If notified of User Content allegedly in violation of these Terms, the Company may investigate and determine in at its sole discretion whether to remove such User Content.
+      </p>
+
+      <h6>FEEDBACK</h6>
+      <p>
+        Any ideas, suggestions, enhancement requests, feedback, recommendations, know-how, or concepts (“Feedback”) that are offered or communicated to the Company through the Site or otherwise are the property of the Company, and may be treated by the Company as non-confidential information. The Company shall have the unrestricted right to use and disclose such Feedback for any purpose without compensation or obligation to any party.
+      </p>
+
+      <h6>DISCLAIMER</h6>
+      <p>
+        Content and the Site are provided on an “as is,” “as available” basis, and neither the Company nor the Information Providers make any representations as to the suitability of the Content, Services or other materials for any purpose. The Company and the Information Providers expressly disclaim any and all warranties, express or implied, including, without limitation, warranties of merchantability, fitness for a particular purpose, title, non-infringement, availability and accuracy with respect to the Site and the materials.
+      </p>
+</div>
+</div>
+</div>
+<br>
+        <div class="text-center">
+  <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)">  <p  style="font-weight:700;display:inline-block">I Agree to the Terms & Coditions!</p>
+    </div>
+
+  <div class='text-center pb-3'>
+        <button type="submit" class="save btn btn-lg btn-primary" name="submit" id="submit">Register</button>
+  </div>
+    <div class="pt-3 pb-3 text-center">
+        <span class="text-center " style="color:#ed2939;font-weight:600;" id="profcont"></span>
+    </div>
+
+    </form>
+
+    {% endif %}
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.meanmenu.min.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/main.js"></script>
+
+<script type="text/javascript">
+    $(document).on('submit','#profile_form',function(es){
+        es.preventDefault();
+        var formdata= new FormData($(this)[0]);
+        console.log(formdata);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'accounts:signup' %}",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(returndata){
+                console.log(returndata);
+                if(returndata.registered){
+                    var xy=document.getElementById('profcont');
+                    xy.innerHTML="Successfully Registered! You can now log in to the site with your credentials! ";
+                    document.getElementById("submit").disabled = true;
+                    document.getElementById("terms").disabled = true;
+                    document.getElementById("profile_form").reset();
+                }
+                else if(returndata.wrong_ref){
+                    var xy=document.getElementById('profcont');
+                    xy.innerHTML="Referral Contact did not match any of our registered contacts! Thank You for Registering! Login with your credentials.";
+                    document.getElementById("submit").disabled = true;
+                    document.getElementById("terms").disabled = true;
+                    document.getElementById("profile_form").reset();
+                }
+                else if(returndata.failed_ref){
+                    var xy=document.getElementById('profcont');
+                    xy.innerHTML="Failed Referral.. You cannot refer yourself. Thank You for Registering! Login with your credentials.";
+                    document.getElementById("submit").disabled = true;
+                    document.getElementById("terms").disabled = true;
+                    document.getElementById("profile_form").reset();
+                }
+                else{
+                    var xy=document.getElementById('profcont');
+                    xy.innerHTML="Error in your form! " +returndata.user_error+" "+returndata.profile_error+" Refresh and provide different values please!";
+                    document.getElementById("submit").disabled = true;
+                    document.getElementById("terms").disabled = true;
+                    document.getElementById("profile_form").reset();
+                }
+            },
+            error: function (x,e) {
+                console.log(x.status+" error in ajax form submission");
+            },
+         });
+    });
+</script>
+
+{% endblock %}

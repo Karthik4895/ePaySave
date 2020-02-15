@@ -1,0 +1,269 @@
+{% extends "admin/base_site.html" %}
+{% load staticfiles %}
+{% load i18n static %}
+{% load total_transac %}
+{% load notifications %}
+{% block extrastyle %}
+{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">
+<link rel="stylesheet" href="/static/css/bg.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+
+
+<script type="text/javascript">
+function func_admin(){
+    x= document.getElementById('admin_set');
+
+    x.style.display="block";
+}
+
+$( document ).ready(function(){
+    var x= document.getElementsByClassName('model-user');
+  if (x.length === 1){
+     $("#admin_set").show();
+ }
+ else{
+    $("#admin_set").hide();
+ }
+});
+
+
+</script>
+
+<div id="content-main">
+
+{% if app_list %}
+    {% for app in app_list %}
+        <div class="app-{{ app.app_label }} module">
+        <table>
+        <caption>
+            <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+        </caption>
+        {% for model in app.models %}
+            <tr class="model-{{ model.object_name|lower }}">
+            {% if model.admin_url %}
+                <th scope="row"><a href="{{ model.admin_url }}">
+                    {{ model.name }}
+                {% if model.object_name == "Wallet" %}
+      <sup><div readonly style="color:white; background-color: red; border:1px solid white; border-radius: 50%; font-weight:800;cursor:default;display: inline-block; height:12px;width:18px; text-align:center;font-size:11px;margin-left:-3px;margin-top:-6px;position:absolute;padding-top:3px;padding-bottom:5px;padding-left:2px; padding-right:2px;">{% notification %}</div>&nbsp &nbsp &nbsp &nbsp &nbsp request(s) pending</sup>
+                {% endif %}
+
+                {% if model.object_name == "User" %}
+
+                {% endif %}
+
+                </th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+
+            {% if model.add_url %}
+                <td><a href="{{ model.add_url }}" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.admin_url %}
+                {% if model.view_only %}
+                <td><a href="{{ model.admin_url }}" class="viewlink">{% trans 'View' %}</a></td>
+                {% else %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+                {% endif %}
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+
+        </div>
+    {% endfor %}
+
+{% else %}
+    <p>{% trans "You don't have permission to view or edit anything." %}</p>
+{% endif %}
+
+    <div id="admin_set">
+    <div class="position:relative;">
+        <div class="position:absolute;" style="margin:-750px 1000px -391px 1000px;">
+        {% for app in app_list %}
+        {% for model in app.models %}
+            {% if model.object_name == "Profile" %}
+                <a href="{{ model.admin_url }}">
+                  <div class="admin_box">
+                    <div style="text-align:center;font-size:17px;font-weight: 600 !important;">
+                        Total Users
+                    </div>
+                    <br><br>
+                    <p style="text-align:right;font-weight: 600 !important; font-size:18px;"> {% total_users %}</p>
+                  </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+      <!--<canvas id="myChart" width="200" height="200"></canvas>-->
+        </div>
+
+    </div>
+
+    <div class="position:relative;">
+        <div class="position:absolute;" style="margin:400px 1000px;">
+        {% for app in app_list %}
+        {% for model in app.models %}
+            {% if model.object_name == "Wallet" %}
+                <a href="{{ model.admin_url }}">
+
+                  <div class='admin_box'>
+                    <div style="text-align:center;font-size:17px;font-weight: 600 !important;">
+                        Pending Wallet Requests
+                    </div>
+                      <br>
+                      <p style="text-align:right;font-weight: 600 !important;font-size:18px;">{% notification %}</p>
+                  </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+          <!--<canvas id="myChart" width="200" height="200"></canvas>-->
+        </div>
+
+    </div>
+
+    <div class="position:relative;">
+        <div class="position:absolute;" style="margin:-391px 1000px 400px 1000px;">
+        {% for app in app_list %}
+        {% for model in app.models %}
+            {% if model.object_name == "Wallet" %}
+                <a href="{{ model.admin_url }}">
+
+                  <div class='admin_box'>
+                    <div style="text-align:center;font-size:17px;font-weight: 600 !important;">
+                        Total Cash Balance
+                    </div>
+                      <br>
+                      <p style="text-align:right;font-weight: 600 !important;font-size:18px;">{% cash_tot %} SGD.</p>
+                  </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="position:relative;">
+        <div class="position:absolute;" style="margin:-391px 1000px 400px 1000px;">
+        {% for app in app_list %}
+        {% for model in app.models %}
+            {% if model.object_name == "Wallet" %}
+                <a href="{{ model.admin_url }}">
+
+                  <div class='admin_box'>
+                    <div style="text-align:center;font-size:17px;font-weight: 600 !important;">
+                        Total Savings Balance
+                    </div>
+                      <br>
+                      <p style="text-align:right;font-weight: 600 !important;font-size:18px;">{% savings_tot %} SGD.</p>
+                  </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="position:relative;">
+        <div class="position:absolute;" style="margin:-391px 1000px 400px 1000px;">
+        {% for app in app_list %}
+        {% for model in app.models %}
+            {% if model.object_name == "Wallet" %}
+                <a href="{{ model.admin_url }}">
+
+                  <div class='admin_box'>
+                    <div style="text-align:center;font-size:17px;font-weight: 600 !important;">
+                        Total Wallet Balance
+                    </div>
+                      <br>
+                      <p style="text-align:right;font-weight: 600 !important;font-size:18px;">{% wallet_tot %} SGD.</p>
+                  </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="position:relative;">
+        <div class="position:absolute;" style="margin:-390px 1000px;">
+        {% for app in app_list %}
+        {% for model in app.models %}
+            {% if model.object_name == "Transaction" %}
+                <a href="{{ model.admin_url }}">
+
+                  <div class='admin_box'>
+                    <div style="text-align:center;font-size:17px;font-weight: 600 !important;">
+                        Total Transactions
+                    </div>
+                      <br><br>
+                      <p style="text-align:right;font-weight: 600 !important; font-size:18px;">{% transac %}</p>
+                  </div>
+                </a>
+            {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+</div>
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module" >
+        <h3 style="background-color:#79aec8; color:white; padding:7px 10px;">{% trans 'RECENT ACTIONS' %}</h3>
+            {% load log %}
+            {% get_admin_log 30 as admin_log %}         {# No more filtering #}
+            {% if not admin_log %}
+            <p>{% trans 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist" style="overflow:scroll; height:400px;">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br/>
+                {% if entry.content_type %}
+                    {# Add the author here, at the end #}
+                    <span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}, by {{ entry.user }}</span>
+                {% else %}
+                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% endblock %}
